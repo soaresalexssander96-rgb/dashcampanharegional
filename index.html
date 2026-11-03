@@ -329,7 +329,7 @@ button{font-family:inherit;cursor:pointer}
         </div>
     </header>
 
-    <div class="aviso-regras">🐉 <span><b>Regulamento a caminho.</b> Por enquanto o ranking usa o <b>% de Serviços</b> da aba SERVIÇO. Quando as regras chegarem, a pontuação muda aqui.</span></div>
+    <div class="aviso-regras">🐉 <span><b>Regulamento a caminho.</b> Quem vai embacar nessa incrível jornada?</span></div>
 
     <section class="card jornada">
         <div class="sec-tit">RUMO À CROÁCIA</div>
@@ -593,7 +593,7 @@ async function carregar() {
         const r = await fetch(API_URL, { cache: 'no-store' }); const js = await r.json();
         processar(js); render();
         try { localStorage.setItem('feras_cache', JSON.stringify({ trofeu: js.trofeu, gerentes: js.gerentes, servico: js.servico })); } catch (e) {}
-        document.getElementById('rodape').innerText = `Dados da aba SERVIÇO · atualizado às ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+        document.getElementById('rodape').innerText = `DASHBOARD OFICIAL REGIONAL CAMPO BOM · atualizado às ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
     } catch (e) {
         if (!dadosProntos) document.getElementById('podio').innerHTML = '<div class="carregando">⚠️ Não consegui buscar os dados agora. Tente atualizar a página.</div>';
         document.getElementById('rodape').innerText = 'Sem conexão com a planilha — mostrando o último dado salvo.';
