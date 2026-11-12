@@ -239,6 +239,49 @@ button{font-family:inherit;cursor:pointer}
 .carregando .spin{width:38px;height:38px;margin:0 auto 12px;border-radius:50%;border:3px solid rgba(242,193,78,.2);border-top-color:var(--ouro);animation:gira 1s linear infinite}
 @keyframes gira{to{transform:rotate(360deg)}}
 
+
+/* campanha */
+.meses{display:flex;gap:8px;margin:18px 0 0;flex-wrap:wrap;position:relative}
+.mes{flex:1;min-width:110px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid var(--linha)}
+.mes .mn{font-family:var(--titulo);font-weight:800;letter-spacing:.1em;font-size:.78rem}
+.mes .mp{font-size:.64rem;color:var(--mut);font-weight:800;letter-spacing:.1em;margin-top:2px}
+.mes .ms{font-size:.6rem;font-weight:800;letter-spacing:.08em;margin-top:6px}
+.mes.fechado{border-color:rgba(61,245,166,.45)} .mes.fechado .ms{color:var(--verde)}
+.mes.atual{border-color:var(--ouro);box-shadow:0 0 0 1px var(--ouro),0 0 24px rgba(242,193,78,.18)} .mes.atual .ms{color:var(--ouro2)}
+.mes.pendente{border-color:rgba(255,181,71,.45)} .mes.pendente .ms{color:var(--ambar)}
+.mes.futuro{opacity:.5} .mes.futuro .ms{color:var(--mut)}
+.abas{display:flex;gap:8px;margin:0 0 16px;flex-wrap:wrap}
+.abas button{flex:1;min-width:120px;padding:12px 14px;border-radius:14px;border:1px solid var(--linha);background:rgba(255,255,255,.04);color:var(--mut2);font-family:var(--titulo);font-weight:800;letter-spacing:.16em;font-size:.8rem;transition:.2s}
+.abas button:hover{border-color:var(--ouro);color:var(--ouro2)}
+.abas button.on{color:#1a1000;background:linear-gradient(180deg,#ffe29a,#f2c14e);border-color:var(--ouro)}
+.abas button[hidden]{display:none}
+.sel-fl{flex:0 0 auto;min-width:150px;padding:11px 12px;border-radius:12px;border:1px solid var(--linha);background:rgba(4,8,22,.9);color:#fff;font-family:inherit;font-weight:600;outline:none}
+.bg-ouro{background:linear-gradient(90deg,var(--azul3),var(--ouro))}
+.lj{cursor:pointer}
+.lj .det{grid-column:1/-1;display:none;margin-top:8px;padding-top:10px;border-top:1px solid var(--linha);cursor:default}
+.lj.aberto{border-color:rgba(242,193,78,.45);background:rgba(242,193,78,.05)}
+.lj.aberto .det{display:block}
+.det-g{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}
+.det-g>*{min-width:0}
+.det-t{font-size:.62rem;letter-spacing:.16em;color:var(--ouro2);font-weight:900;margin-bottom:4px}
+.tb{width:100%;border-collapse:collapse;font-size:.74rem}
+.tb th{text-align:left;font-size:.58rem;letter-spacing:.12em;color:var(--mut);font-weight:800;padding:5px 6px;border-bottom:1px solid var(--linha)}
+.tb td{padding:6px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top}
+.tb .n{text-align:right;white-space:nowrap}
+.tb tr.tot td{font-weight:900;color:var(--ouro2);border-bottom:0}
+.cor-pend{color:var(--mut)}
+.meses-lin{font-size:.66rem;color:var(--mut);margin-top:2px}
+.regras{margin:0 0 10px;font-size:.74rem;color:var(--mut2);line-height:1.55}
+.regras summary{cursor:pointer;color:var(--ouro2);font-weight:800;letter-spacing:.06em;font-size:.72rem}
+.regras ul{margin:6px 0 0 18px}
+.regras b{color:#fff}
+.aviso-dado{margin-top:6px;padding:6px 10px;border-radius:10px;font-size:.7rem;color:var(--ambar);background:rgba(255,181,71,.07);border:1px dashed rgba(255,181,71,.4)}
+.aviso-dado b{color:var(--ambar)}
+.reg-card{padding:22px 20px}
+.reg-top{margin-bottom:16px}
+.esconde{display:none!important}
+@media (max-width:720px){.det-g{grid-template-columns:1fr}.mes{min-width:calc(33% - 8px);padding:8px}.mes .ms{font-size:.52rem}.abas button{min-width:0;letter-spacing:.08em;font-size:.7rem;padding:11px 6px}}
+
 @media (max-width:1100px){.grid-serv{grid-template-columns:repeat(3,1fr)}.duo{grid-template-columns:1fr}}
 @media (max-width:720px){
     #app{padding:10px 12px 50px}
@@ -339,7 +382,7 @@ button{font-family:inherit;cursor:pointer}
         </div>
     </header>
 
-    <div class="aviso-regras">🐉 <span><b>Regulamento a caminho.</b> Por enquanto o ranking usa o <b>% de Serviços</b> da aba SERVIÇO. Quando as regras chegarem, a pontuação muda aqui.</span></div>
+    <div class="aviso-regras">🐉 <span><b>Campanha de 01/11/2026 a 31/03/2027.</b> Cada mês vale pontos × o peso do mês, e o ranking soma tudo. O mês em andamento é <b>parcial</b> até o fechamento.</span></div>
 
     <section class="card jornada">
         <div class="sec-tit">RUMO À CROÁCIA</div>
@@ -351,7 +394,7 @@ button{font-family:inherit;cursor:pointer}
             </div>
             <div class="kpis">
                 <div class="kpi verde"><div class="k-l">Feras (≥100%)</div><div class="k-v" id="kFeras">—</div><div class="k-s" id="kFerasS"></div></div>
-                <div class="kpi ouro"><div class="k-l">Líder</div><div class="k-v" id="kLider">—</div><div class="k-s" id="kLiderS"></div></div>
+                <div class="kpi ouro"><div class="k-l">Gerente líder</div><div class="k-v" id="kLider">—</div><div class="k-s" id="kLiderS"></div></div>
                 <div class="kpi"><div class="k-l">Falta p/ meta</div><div class="k-v" id="kFalta">—</div><div class="k-s" id="kFaltaS"></div></div>
             </div>
         </div>
@@ -359,24 +402,34 @@ button{font-family:inherit;cursor:pointer}
             <div class="trilho"><i id="rotaFill"></i></div>
             <div class="dragao" id="rotaDragao"></div>
         </div>
+        <div class="meses" id="meses"></div>
     </section>
 
     <section class="grid-serv" id="gridServ"></section>
 
-    <section class="duo">
+    <div class="abas" id="abas">
+        <button data-v="ger" class="on">GERENTES</button>
+        <button data-v="vend">VENDEDORES</button>
+        <button data-v="reg" id="abaReg" hidden>🔒 REGIONAL</button>
+    </div>
+
+    <section class="duo" id="duo">
         <div class="card podio-card">
-            <div class="sec-tit">OS 3 MAIS FERAS</div>
+            <div class="sec-tit" id="podioTit">OS 3 GERENTES MAIS FERAS</div>
             <div class="podio" id="podio"><div class="carregando"><div class="spin"></div>Invocando os dragões…</div></div>
         </div>
         <div class="card rank-card">
             <div class="rank-topo">
-                <div class="sec-tit">RANKING DAS LOJAS</div>
+                <div class="sec-tit" id="rankTit">RANKING DOS GERENTES</div>
+                <select class="sel-fl esconde" id="selFl"></select>
                 <input class="busca" id="busca" placeholder="🔍 Filial, cidade ou gerente…" autocomplete="off">
             </div>
+            <details class="regras" id="regras"><summary>Como pontua</summary></details>
             <div class="ord-info" id="ordInfo"></div>
             <div class="lista" id="lista"></div>
         </div>
     </section>
+    <section class="card reg-card esconde" id="regCard"></section>
     <div class="rodape" id="rodape"></div>
 </div>
 
@@ -384,8 +437,10 @@ button{font-family:inherit;cursor:pointer}
 /* =========================================================
    CONFIG
    ========================================================= */
-const API_URL = 'https://script.google.com/macros/s/AKfycbxxXG4d21zN0IIevrrZmTWGu-Jyk5A-ZKvVsNHbn0cScsuW6A2DweT9Nl6wi7EyFcSR/exec';
-const FILIAIS = ['628','665','666','667','671','680','683','690','1119','1122','1124','1128','1130','1140','1142','1144','1147','1148','1149','1172','1178','1180','1182','1183','1195','1198','1504','1511','1520','1534','1820','1821','1826'];
+const API_URL = 'https://script.google.com/macros/s/AKfycbyJihjbF-VD1KPkruG2_FInqP4z-wtr-pix5vWl-0C70iek9ChfsTHInJO6KoRYJxTXLQ/exec';
+// Regional exibida no dash (as lojas vêm da coluna REGIONAL da aba SERVIÇO)
+const REGIONAL_DASH = 'CAMPO BOM';
+let FILIAIS = [];
 const MESES = ['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'];
 // Paradas da jornada (% de Serviços da regional)
 const PARADAS = [
@@ -397,13 +452,13 @@ const PARADAS = [
 ];
 const ROTA_MAX = 120;
 // Colunas da aba SERVIÇO
-const SERVICOS = [
-    { id: 'total',  nome: 'Serviços',      m: 6,  r: 7,  p: 8,  ic: 'kit' },
-    { id: 'gar',    curto: 'GAR',   nome: 'Garantia',      m: 10, r: 11, p: 12, ic: 'garantia' },
-    { id: 'casa',   curto: 'CASA',  nome: 'Casa',          m: 14, r: 15, p: 16, ic: 'casa' },
-    { id: 'compra', curto: 'COMP',  nome: 'Compra',        m: 17, r: 18, p: 19, ic: 'compra' },
-    { id: 'rf',     curto: 'RF',    nome: 'Roubo e Furto', m: 20, r: 21, p: 22, ic: 'escudo' },
-    { id: 'saude',  curto: 'SAÚDE', nome: 'Saúde',         m: 24, r: 25, p: 26, ic: 'saude' }
+const SERVICOS = [   // aba SERVIÇO = export do Data Studio; colunas lidas pelo nome do cabeçalho
+    { id: 'total',  nome: 'Serviços',      col: 'SERV',   ic: 'kit' },
+    { id: 'gar',    curto: 'GAR',   nome: 'Garantia',      col: 'GAR',    ic: 'garantia' },
+    { id: 'casa',   curto: 'CASA',  nome: 'Casa',          col: 'CASA',   ic: 'casa' },
+    { id: 'compra', curto: 'COMP',  nome: 'Compra',        col: 'COMPRA', ic: 'compra' },
+    { id: 'rf',     curto: 'RF',    nome: 'Roubo e Furto', col: 'RF',     ic: 'escudo' },
+    { id: 'saude',  curto: 'SAÚDE', nome: 'Saúde',         col: 'SAUDE',  ic: 'saude' }
 ];
 
 /* =========================================================
@@ -707,6 +762,25 @@ document.getElementById('btnIntro').addEventListener('click', reverIntro);
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && introRodando) fecharIntro(); });
 
 /* =========================================================
+   CAMPANHA — REGULAMENTO "OS FERAS DE SERVIÇOS · CROÁCIA"
+   01/11/2026 a 31/03/2027
+   ========================================================= */
+const CAMP_MESES = [
+    { k: 'NOV', m: 10, a: 2026, nome: 'Novembro',  peso: 3 },
+    { k: 'DEZ', m: 11, a: 2026, nome: 'Dezembro',  peso: 3 },
+    { k: 'JAN', m: 0,  a: 2027, nome: 'Janeiro',   peso: 2 },
+    { k: 'FEV', m: 1,  a: 2027, nome: 'Fevereiro', peso: 2 },
+    { k: 'MAR', m: 2,  a: 2027, nome: 'Março',     peso: 4 }
+];
+// Chave da visão REGIONAL (abra o dash com ?adm=CHAVE uma vez; ?adm=sair para esconder de novo)
+const ADM_CHAVE = 'croacia-adm';
+// Seguros do Bloco Pula pra 10 que contam para a Globalidade
+const P10 = ['gar', 'casa', 'compra', 'rf', 'saude'];
+// Aba LOJAS:      A FILIAL | B META 1P | C REAL 1P | D META APROV % | E REAL APROV % | F % CARTÃO TERCEIROS   (linha FILIAL = REGIONAL para os números da regional)
+// Aba VENDEDORES: A FILIAL | B MATRÍCULA | C NOME | D META SERV | E REAL SERV | F META 1P | G REAL 1P | H APROV % | I QTD CASA | J QTD BEM ESTAR | K % CARTÃO TERCEIROS | L FOTO
+// Fechamento: ao virar o mês, duplicar SERVIÇO, LOJAS e VENDEDORES como "SERVIÇO NOV", "LOJAS NOV", "VENDEDORES NOV" (colar só valores)
+
+/* =========================================================
    DADOS
    ========================================================= */
 function mesReferencia() {
@@ -719,10 +793,23 @@ function num(v) {
     if (typeof v === 'number') return v;
     let s = String(v).trim().replace(/R\$|\s|%/g, '');
     if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.');
+    else if (/^-?\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, '');   // 23.346 = vinte e três mil
     const n = parseFloat(s); return isNaN(n) ? 0 : n;
+}
+// percentual: aceita 0,42 / 42 / "42%" / "42,5%"
+function pctV(v) {
+    if (v == null || String(v).trim() === '') return null;
+    const n = num(v);
+    if (typeof v === 'string' && v.includes('%')) return n / 100;
+    if (typeof v === 'number') return v;               // da planilha já vem como fração (0,42 = 42%)
+    return n > 3 ? n / 100 : n;
 }
 const limpa = v => (v == null ? '' : String(v)).replace(/\D/g, '');
 function nomeBonito(n) { if (!n) return ''; const p = String(n).trim().toLowerCase().split(/\s+/); const f = p[0] || ''; return f.charAt(0).toUpperCase() + f.slice(1); }
+function nomeCurto(n) {
+    const p = String(n || '').trim().toLowerCase().split(/\s+/).filter(Boolean).map(x => x.charAt(0).toUpperCase() + x.slice(1));
+    return p.length > 1 ? `${p[0]} ${p[p.length - 1]}` : (p[0] || '');
+}
 function urlFoto(u) {
     if (!u) return ''; u = String(u).trim();
     if (u.includes('drive.google.com')) { let id = ''; if (u.includes('/d/')) id = u.split('/d/')[1].split('/')[0]; else if (u.includes('id=')) id = u.split('id=')[1].split('&')[0]; if (id) return `https://lh3.googleusercontent.com/d/${id}=w400-h400-p`; }
@@ -731,31 +818,222 @@ function urlFoto(u) {
 const esc = t => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const pctTxt = p => (p * 100).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
 const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+const ptsTxt = p => (Math.round(p * 10) / 10).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 1 });
 const corDe = p => p >= 1 ? 'ok' : p >= .9 ? 'quase' : 'nao';
 function seloDe(p) { if (p >= 1.2) return ['lenda', 'LENDA']; if (p >= 1) return ['fera', 'FERA']; if (p >= .9) return ['quase', 'QUASE LÁ']; return ['jornada', 'EM JORNADA']; }
+const r4 = x => Math.round(x * 10000) / 10000;
+const tetoInt = x => Math.ceil(x - 1e-9);            // 11.2: fração sempre arredonda para o próximo inteiro
+const normAba = n => String(n).normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase().replace(/\s+/g, ' ').trim();
 
-let LOJAS = [], ORDEM = 'total', dadosProntos = false, appAnimado = false;
+// 5.1 — multiplicador por faixa de atingimento
+function mult(a) {
+    a = r4(a);
+    if (a < .95) return 0; if (a < .99) return .5; if (a < 1.05) return 1;
+    if (a < 1.10) return 1.07; if (a < 1.15) return 1.10; if (a < 1.20) return 1.15; return 1.20;
+}
+// 5.2.1 — adicional por participação de serviços no cartão de terceiros
+function bonusCartao(p) {
+    if (p == null) return 0; p = r4(p);
+    if (p < .08) return 0; if (p < .10) return 1; if (p <= .12) return 3; return 5;
+}
+const fmtBrl = (r, m) => `${brl(r)} de ${brl(m)}`;
+const fmtPct = (r, m) => `${pctTxt(r)} de ${pctTxt(m)}`;
+function indMeta(cod, nome, base, real, meta, fmt) {
+    if (!(meta > 0)) return { cod, nome, base, pend: true, pts: 0 };
+    const at = real / meta, mu = mult(at);
+    return { cod, nome, base, at, mu, pts: base * mu, det: fmt ? fmt(real, meta) : '' };
+}
+const indPend = (cod, nome, base) => ({ cod, nome, base, pend: true, pts: 0 });
+// indicador pelo % de projeção do relatório
+function indProj(cod, nome, base, x) {
+    if (!x || !(x.m > 0)) return { cod, nome, base, pend: true, pts: 0 };
+    const mu = mult(x.p);
+    return { cod, nome, base, at: x.p, mu, pts: base * mu, det: `projeção · ${brl(x.r)} de ${brl(x.m)}` };
+}
+function indBin(cod, nome, base, ok, det, pend) {
+    if (pend) return { cod, nome, base, pend: true, pts: 0 };
+    return { cod, nome, base, bin: true, ok, mu: ok ? 1 : 0, pts: ok ? base : 0, det };
+}
+const somaInds = inds => inds.reduce((s, i) => s + i.pts, 0);
+
+/* ---------- leitura das abas ---------- */
+// mapa de colunas pelo cabeçalho (FILIAL, REGIONAL, M_SERV, R_SERV, % SERV, M_VENDA…, APROV, APROV)
+function colunas(head) {
+    const h = (head || []).map(x => normAba(x).replace(/\s+/g, ''));
+    const todos = nome => h.reduce((a, x, i) => (x === nome ? a.concat(i) : a), []);
+    const c = { f: Math.max(0, h.indexOf('FILIAL')), reg: h.indexOf('REGIONAL'), aprov: todos('APROV') };
+    SERVICOS.concat([{ id: 'venda', col: 'VENDA' }]).forEach(sv => { c[sv.id] = { m: h.indexOf('M_' + sv.col), r: h.indexOf('R_' + sv.col), p: h.indexOf('%' + sv.col) }; });
+    return c;
+}
+function lojasDaRegional(rows) {
+    if (!rows || !rows.length) return [];
+    const c = colunas(rows[0]), alvo = normAba(REGIONAL_DASH), out = [];
+    rows.slice(1).forEach(l => { const f = limpa(l && l[c.f]); if (f && (c.reg < 0 || normAba(l[c.reg] || '') === alvo) && !out.includes(f)) out.push(f); });
+    return out;
+}
+function lerServico(rows) {
+    const map = {};
+    if (!rows || !rows.length) return map;
+    const c = colunas(rows[0]);
+    const val = (l, k) => {                       // p = % de projeção do relatório; sem ele, realizado ÷ meta
+        const m = k.m >= 0 ? num(l[k.m]) : 0, r = k.r >= 0 ? num(l[k.r]) : 0;
+        const pc = k.p >= 0 ? l[k.p] : null, temP = pc !== null && pc !== '' && pc !== '-' && !isNaN(num(pc));
+        return { m, r, p: m > 0 ? (temP ? pctV(pc) : r / m) : 0 };
+    };
+    rows.slice(1).forEach(l => {
+        const f = limpa(l && l[c.f]); if (!f || !FILIAIS.includes(f)) return;
+        const s = {}; SERVICOS.forEach(sv => { s[sv.id] = val(l, c[sv.id]); });
+        s.venda = val(l, c.venda);
+        s.aprov = c.aprov.length ? c.aprov.reduce((t, i) => t + (pctV(l[i]) || 0), 0) : null;   // Gar + RF (a confirmar)
+        map[f] = s;
+    });
+    return map;
+}
+function lerLojas(rows) {
+    const map = {}; let reg = null;
+    (rows || []).forEach(l => {
+        if (!l) return;
+        const bruto = normAba(l[0] || ''), o = { m1p: num(l[1]), r1p: num(l[2]), mAprov: pctV(l[3]), rAprov: pctV(l[4]), cartao: pctV(l[5]) };
+        if (bruto === 'REGIONAL') { reg = o; return; }
+        const f = limpa(bruto); if (f && FILIAIS.includes(f)) map[f] = o;
+    });
+    return { map, reg };
+}
+function lerVend(rows) {
+    const out = [];
+    (rows || []).forEach(l => {
+        if (!l) return;
+        const f = limpa(l[0]); if (!f || !FILIAIS.includes(f)) return;
+        const nome = String(l[2] || '').trim(), mat = String(l[1] == null ? '' : l[1]).trim();
+        if (!nome && !mat) return;
+        out.push({ f, mat, nome, mServ: num(l[3]), rServ: num(l[4]), m1p: num(l[5]), r1p: num(l[6]), aprov: pctV(l[7]), casa: num(l[8]), bem: num(l[9]), cartao: pctV(l[10]), foto: urlFoto(l[11]) });
+    });
+    return out;
+}
+
+/* ---------- pontuação por cargo (item 5) ---------- */
+function pontuarVend(v) {
+    if (!(v.mServ > 0)) return null;                                   // 11.2: vendedor sem meta não pontua
+    const inds = [
+        indMeta('SERV', 'Serviços individual (Bloco P10)', 40, v.rServ, v.mServ, fmtBrl),
+        indMeta('1P', 'Vendas individual 1P', 20, v.r1p, v.m1p, fmtBrl),
+        v.aprov == null ? indPend('APROV', 'Aproveitamento Gar+RF (meta 40%)', 20)
+                        : indMeta('APROV', 'Aproveitamento Gar+RF (meta 40%)', 20, v.aprov, .4, r => `${pctTxt(r)} de 40%`),
+        indMeta('CASA', '10 Seguros Casa Protegida', 10, v.casa, 10, r => `${r} de 10`),
+        indMeta('BEM', '5 Seguros Bem Estar', 10, v.bem, 5, r => `${r} de 5`)
+    ];
+    const bonus = bonusCartao(v.cartao);
+    return { inds, bonus, cartao: v.cartao, pts: somaInds(inds) + bonus, serv: { m: v.mServ, r: v.rServ, p: v.rServ / v.mServ } };
+}
+function pontuarLoja(f, M) {
+    const s = M.serv[f], L = M.lojas.map[f];
+    const vs = M.vend.filter(v => v.f === f && v.mServ > 0);
+    const n = vs.length, pctN = n <= 20 ? .5 : .4, need = tetoInt(n * pctN);
+    const bat = vs.filter(v => r4(v.rServ / v.mServ) >= 1).length;
+    const comMeta = P10.filter(id => s[id].m > 0), naMeta = comMeta.filter(id => r4(s[id].p) >= 1);
+    const inds = [
+        indProj('SERV', 'Serviços loja (Bloco P10)', 30, s.total),
+        L && L.m1p > 0 ? indMeta('1P', 'Vendas loja 1P', 20, L.r1p, L.m1p, fmtBrl) : indProj('1P', 'Vendas loja 1P', 20, s.venda),
+        indBin('VEND', `Vendedores na meta de serviços (${n <= 20 ? 50 : 40}%)`, 20, n > 0 && bat >= need, `${bat} de ${n} vendedores (precisa ${need})`, !M.temVend || n === 0),
+        L && L.mAprov > 0 && L.rAprov != null ? indMeta('APROV', 'Aproveitamento loja Gar+RF', 20, L.rAprov, L.mAprov, fmtPct)
+            : s.aprov != null && s.total.m > 0 ? indMeta('APROV', 'Aproveitamento loja Gar+RF (meta 40% a confirmar)', 20, s.aprov, .4, r => `${pctTxt(r)} de 40%`) : indPend('APROV', 'Aproveitamento loja Gar+RF', 20),
+        indBin('GLOB', 'Globalidade (todos os seguros P10)', 10, comMeta.length > 0 && naMeta.length === comMeta.length, `${naMeta.length} de ${comMeta.length} seguros na meta`, comMeta.length === 0)
+    ];
+    const bonus = L ? bonusCartao(L.cartao) : 0;
+    return { f, inds, bonus, cartao: L ? L.cartao : null, pts: somaInds(inds) + bonus, serv: s.total };
+}
+function pontuarReg(M, lojas) {
+    const tot = {};
+    SERVICOS.concat([{ id: 'venda' }]).forEach(sv => { let m = 0, r = 0, mp = 0; lojas.forEach(l => { const x = M.serv[l.f][sv.id]; m += x.m; r += x.r; mp += x.m * x.p; }); tot[sv.id] = { m, r, p: m > 0 ? mp / m : 0 }; });
+    const R = M.lojas.reg; let m1p = 0, r1p = 0;
+    if (R && R.m1p > 0) { m1p = R.m1p; r1p = R.r1p; }
+    else lojas.forEach(l => { const L = M.lojas.map[l.f]; if (L && L.m1p > 0) { m1p += L.m1p; r1p += L.r1p; } });
+    const n = lojas.length, need = tetoInt(n * .6), bat = lojas.filter(l => r4(l.serv.p) >= 1).length;
+    const comMeta = P10.filter(id => tot[id].m > 0), naMeta = comMeta.filter(id => r4(tot[id].p) >= 1);
+    const inds = [
+        indProj('SERV', 'Serviços regional (Bloco P10)', 40, tot.total),
+        R && R.m1p > 0 ? indMeta('1P', 'Vendas regional 1P', 20, r1p, m1p, fmtBrl) : indProj('1P', 'Vendas regional 1P', 20, tot.venda),
+        R && R.mAprov > 0 && R.rAprov != null ? indMeta('APROV', 'Aproveitamento regional Gar+RF', 20, R.rAprov, R.mAprov, fmtPct) : indPend('APROV', 'Aproveitamento regional Gar+RF', 20),
+        indBin('LOJAS', '60% das lojas na meta de serviços', 10, bat >= need, `${bat} de ${n} lojas (precisa ${need})`, n === 0),
+        indBin('GLOB', 'Globalidade (todos os seguros do bloco)', 10, comMeta.length > 0 && naMeta.length === comMeta.length, `${naMeta.length} de ${comMeta.length} seguros na meta`, comMeta.length === 0)
+    ];
+    return { inds, bonus: 0, cartao: null, pts: somaInds(inds), serv: tot.total };
+}
+function pontuarMes(M) {
+    const lojas = FILIAIS.filter(f => M.serv[f] && M.serv[f].total.m > 0).map(f => pontuarLoja(f, M));
+    return { lojas, vend: M.vend.map(v => ({ v, sc: pontuarVend(v) })), reg: pontuarReg(M, lojas) };
+}
+
+/* ---------- meses + acumulado (item 7) ---------- */
+function acharAba(abas, pref, k) {
+    for (const n in abas) {
+        if (!n.startsWith(pref + ' ')) continue;
+        if (n.slice(pref.length).replace(/[^A-Z]/g, '').startsWith(k)) return abas[n];
+    }
+    return null;
+}
+let CAMP = null, INFO = {};
+function montarCampanha(js) {
+    const abas = {}; Object.entries(js.campanha || {}).forEach(([k, v]) => { abas[normAba(k)] = v; });
+    const ref = mesReferencia(), refOrd = ref.a * 12 + ref.m;
+    const meses = CAMP_MESES.map(cm => {
+        const ord = cm.a * 12 + cm.m, sF = acharAba(abas, 'SERVICO', cm.k);
+        let st, src = null;
+        if (sF) { st = 'fechado'; src = { serv: sF, lojas: acharAba(abas, 'LOJAS', cm.k), vend: acharAba(abas, 'VENDEDORES', cm.k) }; }
+        else if (ord === refOrd) { st = 'atual'; src = { serv: js.servico, lojas: abas['LOJAS'], vend: abas['VENDEDORES'] }; }
+        else st = ord < refOrd ? 'pendente' : 'futuro';
+        let M = null, res = null;
+        if (src) {
+            M = { serv: lerServico(src.serv), lojas: lerLojas(src.lojas), vend: lerVend(src.vend), temLojas: !!src.lojas, temVend: !!src.vend };
+            res = pontuarMes(M);
+        }
+        return Object.assign({}, cm, { ord, st, M, res });
+    });
+    const ger = {}, vend = {}, reg = { total: 0, meses: [] };
+    meses.forEach(me => {
+        if (!me.res) return;
+        const mm = { k: me.k, nome: me.nome, peso: me.peso, st: me.st };
+        me.res.lojas.forEach(l => {
+            const g = ger[l.f] || (ger[l.f] = { f: l.f, total: 0, sm: 0, sr: 0, meses: [] });
+            g.total += l.pts * me.peso; g.sm += l.serv.m; g.sr += l.serv.r;
+            g.meses.push(Object.assign({ pts: l.pts }, mm)); g.ult = l; g.ultMes = me;
+        });
+        me.res.vend.forEach(({ v, sc }) => {
+            const key = v.mat || (v.f + '|' + v.nome.toLowerCase());
+            const o = vend[key] || (vend[key] = { key, total: 0, fat: 0, meses: [], temMeta: false });
+            o.f = v.f; o.nome = v.nome; o.mat = v.mat; if (v.foto) o.foto = v.foto;     // 13: pontos são do colaborador, filial = a mais recente
+            o.fat += v.rServ;
+            if (sc) { o.temMeta = true; o.total += sc.pts * me.peso; }
+            o.meses.push(Object.assign({ pts: sc ? sc.pts : 0, semMeta: !sc }, mm)); o.ult = sc; o.ultMes = me;
+        });
+        reg.total += me.res.reg.pts * me.peso; reg.meses.push(Object.assign({ pts: me.res.reg.pts }, mm)); reg.ult = me.res.reg; reg.ultMes = me;
+    });
+    // 6: desempate — gerentes pelo % da meta de serviços no período; vendedores pelo faturamento de serviços
+    const gerL = Object.values(ger).sort((a, b) => b.total - a.total || (b.sm ? b.sr / b.sm : 0) - (a.sm ? a.sr / a.sm : 0));
+    const vendL = Object.values(vend).filter(o => o.temMeta).sort((a, b) => b.total - a.total || b.fat - a.fat);
+    const atual = meses.find(m => m.st === 'atual') || [...meses].reverse().find(m => m.res) || null;
+    CAMP = { meses, ger: gerL, vend: vendL, reg, atual };
+}
+
+let LOJAS = [], dadosProntos = false, appAnimado = false, VISAO = 'ger', ADM = false;
 function processar(js) {
     const cidades = {}, gerentes = {};
-    (js.trofeu || []).forEach(l => { const f = limpa(l && l[0]); if (f && l[1]) cidades[f] = String(l[1]).trim(); });
-    (js.gerentes || []).forEach(l => { const f = limpa(l && l[0]); if (f) gerentes[f] = { nome: nomeBonito(l[1] || l[2]), foto: urlFoto(l[5]) }; });
-    const lojas = [];
-    (js.servico || []).forEach(l => {
-        const f = limpa(l && l[0]); if (!f || !FILIAIS.includes(f)) return;
-        const s = {};
-        SERVICOS.forEach(sv => { const m = num(l[sv.m]), r = num(l[sv.r]); s[sv.id] = { m, r, p: m > 0 ? r / m : 0 }; });
-        lojas.push({ f, cidade: cidades[f] || '', gerente: (gerentes[f] || {}).nome || '', foto: (gerentes[f] || {}).foto || '', s });
-    });
-    LOJAS = lojas;
-    dadosProntos = lojas.length > 0;
+    // aba FILIAIS: A FILIAL | B CIDADE | C GERENTE | D FOTO (link)
+    (js.filiais || []).forEach(l => { const f = limpa(l && l[0]); if (!f) return; if (l[1]) cidades[f] = String(l[1]).trim(); if (l[2] || l[3]) gerentes[f] = { nome: nomeBonito(l[2]), foto: urlFoto(l[3]) }; });
+    FILIAIS = lojasDaRegional(js.servico);
+    INFO = {}; FILIAIS.forEach(f => { INFO[f] = { cidade: cidades[f] || '', gerente: (gerentes[f] || {}).nome || '', foto: (gerentes[f] || {}).foto || '' }; });
+    const map = lerServico(js.servico);
+    LOJAS = FILIAIS.filter(f => map[f] && map[f].total.m > 0).map(f => Object.assign({ f, s: map[f] }, INFO[f]));
+    montarCampanha(js);
+    dadosProntos = LOJAS.length > 0;
 }
 async function carregar() {
-    try { const c = localStorage.getItem('feras_cache'); if (c) { processar(JSON.parse(c)); render(); } } catch (e) {}
+    try { const c = localStorage.getItem('feras_cache4'); if (c) { processar(JSON.parse(c)); render(); } } catch (e) {}
     try {
         const r = await fetch(API_URL, { cache: 'no-store' }); const js = await r.json();
         processar(js); render();
-        try { localStorage.setItem('feras_cache', JSON.stringify({ trofeu: js.trofeu, gerentes: js.gerentes, servico: js.servico })); } catch (e) {}
-        document.getElementById('rodape').innerText = `Dados da aba SERVIÇO · atualizado às ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+        try { localStorage.setItem('feras_cache4', JSON.stringify({ filiais: js.filiais, servico: js.servico, campanha: js.campanha })); } catch (e) {}
+        document.getElementById('rodape').innerText = `Dados das abas SERVIÇO, LOJAS e VENDEDORES · atualizado às ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
     } catch (e) {
         if (!dadosProntos) document.getElementById('podio').innerHTML = '<div class="carregando">⚠️ Não consegui buscar os dados agora. Tente atualizar a página.</div>';
         document.getElementById('rodape').innerText = 'Sem conexão com a planilha — mostrando o último dado salvo.';
@@ -765,7 +1043,7 @@ async function carregar() {
 /* =========================================================
    RENDER
    ========================================================= */
-function totalRegional(id) { let m = 0, r = 0; LOJAS.forEach(l => { m += l.s[id].m; r += l.s[id].r; }); return { m, r, p: m > 0 ? r / m : 0 }; }
+function totalRegional(id) { let m = 0, r = 0, mp = 0; LOJAS.forEach(l => { m += l.s[id].m; r += l.s[id].r; mp += l.s[id].m * l.s[id].p; }); return { m, r, p: m > 0 ? mp / m : 0 }; }
 function montarRota() {
     const rota = document.getElementById('rota');
     rota.querySelectorAll('.parada').forEach(e => e.remove());
@@ -773,26 +1051,47 @@ function montarRota() {
         d.innerHTML = `<div class="pc">${pa.p}%</div><div class="pin">${pa.meta ? BANDEIRA_HR : ''}</div><div class="nm">${pa.nm}</div>`; rota.appendChild(d); });
     document.getElementById('rotaDragao').innerHTML = DRAGAO_MINI;
 }
+const ST_MES = { fechado: 'FECHADO', atual: 'EM ANDAMENTO', pendente: 'AGUARDANDO FECHAMENTO', futuro: 'A VIR' };
+const REGRAS = {
+    ger: `<ul>
+        <li><b>Serviços da loja (Bloco P10)</b> 30 · <b>Vendas 1P</b> 20 · <b>Aproveitamento Gar+RF</b> 20</li>
+        <li><b>Vendedores na meta de serviços</b> 20: até 20 vendedores com meta, 50% deles; acima de 20, 40% (arredonda para cima)</li>
+        <li><b>Globalidade</b> 10: todos os seguros do P10 na meta</li>
+        <li><b>Cartão de terceiros</b> (adicional): 8% a 9,99% +1 · 10% a 12% +3 · acima de 12% +5</li>
+        <li>Desempate: % da meta de serviços da loja no período</li></ul>`,
+    vend: `<ul>
+        <li><b>Serviços individual (Bloco P10)</b> 40 · <b>Vendas 1P</b> 20 · <b>Aproveitamento Gar+RF</b> 20 (meta 40%)</li>
+        <li><b>10 Casa Protegida</b> 10 · <b>5 Bem Estar</b> 10</li>
+        <li><b>Cartão de terceiros</b> (adicional): 8% a 9,99% +1 · 10% a 12% +3 · acima de 12% +5</li>
+        <li>Vendedor sem meta no sistema não pontua · Desempate: faturamento de serviços no período</li></ul>`,
+    reg: `<ul>
+        <li><b>Serviços regional (Bloco P10)</b> 40 · <b>Vendas 1P</b> 20 · <b>Aproveitamento Gar+RF</b> 20</li>
+        <li><b>60% das lojas na meta de serviços</b> 10 · <b>Globalidade</b> 10</li>
+        <li>Desempate: % da meta de serviços da regional no período</li></ul>`
+};
+const REGRAS_COMUM = `<p style="margin-top:8px"><b>Multiplicador:</b> abaixo de 95% = 0 · 95% a 98,99% = 50% · 99% a 104,99% = 100% · 105% = 107% · 110% = 110% · 115% = 115% · 120% ou mais = 120%.
+    Indicadores de sim/não (vendedores na meta, 60% das lojas, globalidade) valem a pontuação cheia ou zero.
+    <b>Peso do mês:</b> Nov 3× · Dez 3× · Jan 2× · Fev 2× · Mar 4×. O mês em andamento é parcial.</p>`;
+
 function render() {
     if (!dadosProntos) return;
     document.getElementById('mesRef').innerText = mesReferencia().txt;
     const T = totalRegional('total');
     document.getElementById('regPct').innerHTML = (T.p * 100).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '<small>%</small>';
-    document.getElementById('regSub').innerHTML = `<b>${brl(T.r)}</b> de ${brl(T.m)} em serviços`;
-    const ord = [...LOJAS].sort((a, b) => b.s.total.p - a.s.total.p);
+    document.getElementById('regSub').innerHTML = `projeção do mês · <b>${brl(T.r)}</b> de ${brl(T.m)} realizados`;
     const feras = LOJAS.filter(l => l.s.total.p >= 1).length;
     document.getElementById('kFeras').innerText = `${feras}/${LOJAS.length}`;
     document.getElementById('kFerasS').innerText = feras === 1 ? 'loja acima da meta' : 'lojas acima da meta';
-    const lid = ord[0];
-    document.getElementById('kLider').innerText = lid ? pctTxt(lid.s.total.p) : '—';
-    document.getElementById('kLiderS').innerText = lid ? `FL ${lid.f} · ${lid.cidade}` : '';
+    const lid = CAMP.ger[0];
+    document.getElementById('kLider').innerText = lid && lid.total > 0 ? `${ptsTxt(lid.total)} pts` : '—';
+    document.getElementById('kLiderS').innerText = lid ? `FL ${lid.f}${INFO[lid.f].cidade ? ' · ' + INFO[lid.f].cidade : ''}` : '';
     const falta = Math.max(0, T.m - T.r);
     document.getElementById('kFalta').innerText = falta > 0 ? brl(falta).replace(/\s/g, ' ') : 'Batida! 🐉';
     document.getElementById('kFaltaS').innerText = falta > 0 ? 'em serviços na regional' : 'meta da regional';
 
     document.getElementById('gridServ').innerHTML = SERVICOS.map(sv => {
         const t = totalRegional(sv.id), c = corDe(t.p), bat = LOJAS.filter(l => l.s[sv.id].m > 0 && l.s[sv.id].p >= 1).length;
-        return `<div class="card serv${ORDEM === sv.id ? ' ativo' : ''}" data-id="${sv.id}" title="Ordenar o ranking por ${esc(sv.nome)}">
+        return `<div class="card serv">
             <div class="s-ic">${ICONES[sv.ic]}</div>
             <div class="s-n">${esc(sv.nome)}</div>
             <div class="s-p cor-${c}">${pctTxt(t.p)}</div>
@@ -800,49 +1099,128 @@ function render() {
             <div class="s-s"><b>${bat}</b> loja${bat !== 1 ? 's' : ''} na meta</div>
         </div>`;
     }).join('');
-    document.querySelectorAll('.serv').forEach(e => e.addEventListener('click', () => { ORDEM = e.dataset.id; render(); requestAnimationFrame(() => animarBarras(true)); }));
 
-    renderPodio(); renderLista();
+    document.getElementById('meses').innerHTML = CAMP.meses.map(m =>
+        `<div class="mes ${m.st}"><div class="mn">${m.nome.toUpperCase()}</div><div class="mp">PESO ${m.peso}×</div><div class="ms">${ST_MES[m.st]}</div></div>`).join('');
+
+    if (VISAO === 'reg' && !ADM) VISAO = 'ger';
+    document.getElementById('abaReg').hidden = !ADM;
+    document.querySelectorAll('#abas button').forEach(b => b.classList.toggle('on', b.dataset.v === VISAO));
+    const ehReg = VISAO === 'reg';
+    document.getElementById('duo').classList.toggle('esconde', ehReg);
+    document.getElementById('regCard').classList.toggle('esconde', !ehReg);
+    if (ehReg) renderReg();
+    else { const it = itens(); renderPodio(it); renderLista(it); }
     if (appAnimado) animarBarras(false);
 }
-function avatar(l, cls) {
-    const ini = (l.gerente || l.cidade || 'FL').split(' ').map(x => x[0]).join('').slice(0, 2).toUpperCase();
-    return l.foto ? `<img src="${esc(l.foto)}" alt="" onerror="this.outerHTML='<div class=&quot;ini&quot;>${esc(ini)}</div>'">` : `<div class="ini">${esc(ini)}</div>`;
+
+/* itens do ranking no formato comum */
+function itens() {
+    if (VISAO === 'vend') return CAMP.vend.map(o => {
+        const inf = INFO[o.f] || {};
+        return { id: o.key, f: o.f, titulo: nomeCurto(o.nome) || 'Vendedor', sub: `FL ${o.f}${inf.cidade ? ' · ' + inf.cidade : ''}`, nomeAv: o.nome, foto: o.foto || '',
+            total: o.total, ult: o.ult, ultMes: o.ultMes, meses: o.meses, servP: o.ult ? o.ult.serv.p : 0,
+            busca: `fl ${o.f} ${inf.cidade || ''} ${o.nome} ${o.mat}`.toLowerCase() };
+    });
+    return CAMP.ger.map(g => {
+        const inf = INFO[g.f] || {};
+        return { id: g.f, f: g.f, titulo: inf.gerente || 'Gerente a cadastrar', sub: `FL ${g.f}${inf.cidade ? ' · ' + inf.cidade : ''}`, nomeAv: inf.gerente || inf.cidade, foto: inf.foto,
+            total: g.total, ult: g.ult, ultMes: g.ultMes, meses: g.meses, servP: g.ult ? g.ult.serv.p : 0,
+            busca: `fl ${g.f} ${inf.cidade || ''} ${inf.gerente || ''}`.toLowerCase() };
+    });
 }
-function renderPodio() {
-    const id = ORDEM, ord = [...LOJAS].filter(l => l.s[id].m > 0).sort((a, b) => b.s[id].p - a.s[id].p);
-    const top = [ord[1], ord[0], ord[2]], cls = ['p2', 'p1', 'p3'], pos = ['2º', '1º', '3º'];
+function avatar(it) {
+    const ini = (it.nomeAv || 'FL').split(' ').filter(Boolean).map(x => x[0]).join('').slice(0, 2).toUpperCase();
+    return it.foto ? `<img src="${esc(it.foto)}" alt="" onerror="this.outerHTML='<div class=&quot;ini&quot;>${esc(ini)}</div>'">` : `<div class="ini">${esc(ini)}</div>`;
+}
+const clsInd = i => i.pend ? 'pend' : i.mu >= 1 ? 'ok' : i.mu > 0 ? 'quase' : 'nao';
+function chipsDe(sc) {
+    if (!sc) return '<span class="chip cor-pend">sem meta no mês</span>';
+    return sc.inds.map(i => `<span class="chip cor-${clsInd(i)}" title="${esc(i.nome)}">${esc(i.cod)} ${i.pend ? '—' : ptsTxt(i.pts)}</span>`).join('')
+        + (sc.bonus ? `<span class="chip cor-ok" title="Cartão de terceiros">CARTÃO +${sc.bonus}</span>` : '');
+}
+function tabelaInds(sc) {
+    if (!sc) return '<div class="meses-lin">Sem meta no sistema neste mês: não pontua.</div>';
+    const linhas = sc.inds.map(i => {
+        const res = i.pend ? 'aguardando dado' : i.bin ? (i.ok ? 'atingiu' : 'não atingiu') : `${pctTxt(i.at)} → ×${Math.round(i.mu * 100)}%`;
+        return `<tr><td>${esc(i.nome)}${i.det ? `<div class="meses-lin">${esc(i.det)}</div>` : ''}</td><td class="n">${res}</td><td class="n cor-${clsInd(i)}">${ptsTxt(i.pts)} / ${i.base}</td></tr>`;
+    }).join('');
+    const cart = sc.cartao != null ? `<tr><td>Cartão de terceiros <div class="meses-lin">${pctTxt(sc.cartao)} de participação</div></td><td class="n">adicional</td><td class="n ${sc.bonus ? 'cor-ok' : ''}">+${sc.bonus}</td></tr>` : '';
+    return `<table class="tb"><tr><th>INDICADOR</th><th class="n">ATINGIMENTO</th><th class="n">PONTOS</th></tr>${linhas}${cart}
+        <tr class="tot"><td>Total do mês</td><td></td><td class="n">${ptsTxt(sc.pts)}</td></tr></table>`;
+}
+function tabelaMeses(meses, total) {
+    const linhas = meses.map(m => `<tr><td>${esc(m.nome)}${m.st === 'atual' ? ' <span class="cor-pend">(parcial)</span>' : ''}${m.semMeta ? ' <span class="cor-pend">(sem meta)</span>' : ''}</td><td class="n">${ptsTxt(m.pts)}</td><td class="n">×${m.peso}</td><td class="n">${ptsTxt(m.pts * m.peso)}</td></tr>`).join('');
+    return `<table class="tb"><tr><th>MÊS</th><th class="n">PONTOS</th><th class="n">PESO</th><th class="n">TOTAL</th></tr>${linhas}
+        <tr class="tot"><td>Acumulado</td><td></td><td></td><td class="n">${ptsTxt(total)}</td></tr></table>`;
+}
+function renderPodio(it) {
+    const top = [it[1], it[0], it[2]], cls = ['p2', 'p1', 'p3'], pos = ['2º', '1º', '3º'];
+    if (!it.length) { document.getElementById('podio').innerHTML = `<div class="carregando">${VISAO === 'vend' ? 'Aguardando a aba VENDEDORES na planilha.' : 'Sem dados ainda.'}</div>`; return; }
     document.getElementById('podio').innerHTML = top.map((l, i) => {
         if (!l) return '<div class="pd"></div>';
-        const [sc, st] = seloDe(l.s[id].p);
+        const [sc, st] = seloDe(l.servP);
         return `<div class="pd ${cls[i]}">
             <div class="av">${i === 1 ? `<div class="coroa">${COROA}</div>` : ''}${avatar(l)}</div>
-            <div class="nome">${esc(l.gerente || 'FL ' + l.f)}</div>
-            <div class="fl">FL ${esc(l.f)} · ${esc(l.cidade)}</div>
-            <div class="base"><div class="pos">${pos[i]}</div><div class="pct cor-${corDe(l.s[id].p)}">${pctTxt(l.s[id].p)}</div><span class="selo ${sc}">${st}</span></div>
+            <div class="nome">${esc(l.titulo)}</div>
+            <div class="fl">${esc(l.sub)}</div>
+            <div class="base"><div class="pos">${pos[i]}</div><div class="pct" style="color:var(--ouro2)">${ptsTxt(l.total)} pts</div><span class="selo ${sc}" title="Serviços no mês">${st}</span></div>
         </div>`;
     }).join('');
 }
-function renderLista() {
-    const id = ORDEM, sv = SERVICOS.find(s => s.id === id);
-    const ord = [...LOJAS].sort((a, b) => (b.s[id].m > 0) - (a.s[id].m > 0) || b.s[id].p - a.s[id].p);
-    document.getElementById('ordInfo').innerHTML = `Ordenado por <b>${esc(sv.nome)}</b> · toque num card de serviço para trocar`;
-    const q = (document.getElementById('busca').value || '').toLowerCase().trim();
-    document.getElementById('lista').innerHTML = ord.map((l, i) => {
-        const v = l.s[id], c = corDe(v.p), [sc, st] = seloDe(v.p);
-        const txt = `fl ${l.f} ${l.cidade} ${l.gerente}`.toLowerCase();
-        const chips = SERVICOS.filter(s => s.id !== 'total').map(s => { const x = l.s[s.id]; if (!(x.m > 0)) return ''; return `<span class="chip cor-${corDe(x.p)}" title="${esc(s.nome)}">${esc(s.curto)} ${Math.round(x.p * 100)}%</span>`; }).join('');
-        return `<div class="lj" data-busca="${esc(txt)}" style="${q && !txt.includes(q) ? 'display:none' : ''}">
+function renderLista(it) {
+    const atual = CAMP.atual, avisos = [];
+    if (atual && atual.M) {
+        if (!atual.M.temLojas && VISAO === 'ger') avisos.push('aba <b>LOJAS</b> ainda não encontrada: 1P, Aproveitamento e Cartão aparecem como aguardando');
+        if (!atual.M.temVend) avisos.push(VISAO === 'ger' ? 'aba <b>VENDEDORES</b> ainda não encontrada: "vendedores na meta" aparece como aguardando' : 'aba <b>VENDEDORES</b> ainda não encontrada na planilha');
+    }
+    const pend = CAMP.meses.filter(m => m.st === 'pendente');
+    if (pend.length) avisos.push(`falta o fechamento de <b>${pend.map(m => m.nome).join(', ')}</b> (abas "SERVIÇO ${pend[0].k}", "LOJAS ${pend[0].k}" e "VENDEDORES ${pend[0].k}")`);
+    document.getElementById('ordInfo').innerHTML = `Ordenado por <b>pontos acumulados</b> (mês × peso) · toque numa linha para ver o detalhe`
+        + avisos.map(a => `<div class="aviso-dado">⚠️ ${a}</div>`).join('');
+    document.getElementById('regras').innerHTML = `<summary>Como pontua</summary>${REGRAS[VISAO]}${REGRAS_COMUM}`;
+    document.getElementById('rankTit').innerText = VISAO === 'vend' ? 'RANKING DOS VENDEDORES' : 'RANKING DOS GERENTES';
+    document.getElementById('podioTit').innerText = VISAO === 'vend' ? 'OS 3 VENDEDORES MAIS FERAS' : 'OS 3 GERENTES MAIS FERAS';
+    document.getElementById('busca').placeholder = VISAO === 'vend' ? '🔍 Nome, matrícula ou cidade…' : '🔍 Filial, cidade ou gerente…';
+    const sel = document.getElementById('selFl');
+    sel.classList.toggle('esconde', VISAO !== 'vend');
+    if (VISAO === 'vend') {
+        const v0 = sel.value, fls = [...new Set(it.map(x => x.f))].sort((a, b) => +a - +b);
+        sel.innerHTML = '<option value="">Todas as filiais</option>' + fls.map(f => `<option value="${f}">FL ${f} · ${esc((INFO[f] || {}).cidade || '')}</option>`).join('');
+        if (fls.includes(v0)) sel.value = v0;
+    }
+    const max = Math.max(1, ...it.map(x => x.total));
+    document.getElementById('lista').innerHTML = it.length ? it.map((l, i) => {
+        const [sc, st] = seloDe(l.servP);
+        const mesTxt = l.ult ? `${l.ultMes.nome.toLowerCase()}: ${ptsTxt(l.ult.pts)} × ${l.ultMes.peso}` : 'sem meta no mês';
+        return `<div class="lj" data-busca="${esc(l.busca)}" data-fl="${esc(l.f)}">
             <div class="ps">${i + 1}º</div>
             <div class="md">
-                <div class="n1">FL ${esc(l.f)} · ${esc(l.cidade)}</div>
-                <div class="n2">${esc(l.gerente)} <span class="selo ${sc}" style="margin:0 0 0 6px;font-size:.52rem;padding:1px 6px">${st}</span></div>
-                <div class="br"><i class="bg-${c}" data-w="${Math.min(100, v.p / 1.2 * 100)}"></i><span class="mk" title="Meta 100%"></span></div>
-                ${id === 'total' ? `<div class="chips">${chips}</div>` : ''}
+                <div class="n1">${esc(VISAO === 'vend' ? l.titulo : l.sub)}</div>
+                <div class="n2">${esc(VISAO === 'vend' ? l.sub : l.titulo)} <span class="selo ${sc}" style="margin:0 0 0 6px;font-size:.52rem;padding:1px 6px">${st}</span></div>
+                <div class="br"><i class="bg-ouro" data-w="${l.total / max * 100}"></i></div>
+                <div class="chips">${chipsDe(l.ult)}</div>
             </div>
-            <div class="dir"><div class="pv cor-${c}">${v.m > 0 ? pctTxt(v.p) : '—'}</div><div class="rv">${v.m > 0 ? brl(v.r) : 'sem meta'}</div></div>
+            <div class="dir"><div class="pv" style="color:var(--ouro2)">${ptsTxt(l.total)}</div><div class="rv">pts · ${esc(mesTxt)}</div></div>
+            <div class="det"><div class="det-g"><div><div class="det-t">${esc((l.ultMes || {}).nome || '')}${l.ultMes && l.ultMes.st === 'atual' ? ' (parcial)' : ''}</div>${tabelaInds(l.ult)}</div><div><div class="det-t">ACUMULADO</div>${tabelaMeses(l.meses, l.total)}</div></div></div>
         </div>`;
-    }).join('');
+    }).join('') : `<div class="carregando">${VISAO === 'vend' ? 'Assim que a aba VENDEDORES existir na planilha, o ranking aparece aqui.' : 'Sem dados.'}</div>`;
+    filtrar();
+}
+function renderReg() {
+    const R = CAMP.reg, el = document.getElementById('regCard');
+    if (!R.ult) { el.innerHTML = '<div class="carregando">Sem dados da regional.</div>'; return; }
+    el.innerHTML = `<div class="sec-tit">PONTUAÇÃO DA REGIONAL · GRV / CRS</div>
+        <div class="reg-top"><div class="jor-big"><div class="lbl">PONTOS ACUMULADOS</div><div class="num">${ptsTxt(R.total)}<small> pts</small></div>
+        <div class="sub">${esc(R.ultMes.nome)}${R.ultMes.st === 'atual' ? ' (parcial)' : ''}: <b>${ptsTxt(R.ult.pts)} pts</b> × peso ${R.ultMes.peso}</div></div></div>
+        <div class="det-g"><div><div class="det-t">${esc(R.ultMes.nome.toUpperCase())}</div>${tabelaInds(R.ult)}</div><div><div class="det-t">ACUMULADO</div>${tabelaMeses(R.meses, R.total)}</div></div>
+        <details class="regras" open><summary>Como pontua</summary>${REGRAS.reg}${REGRAS_COMUM}</details>
+        <div class="meses-lin" style="margin-top:10px">🔒 Visão de admin. Para esconder neste aparelho, abra o dash com <b>?adm=sair</b>.</div>`;
+}
+function filtrar() {
+    const q = (document.getElementById('busca').value || '').toLowerCase().trim();
+    const fl = VISAO === 'vend' ? document.getElementById('selFl').value : '';
+    document.querySelectorAll('.lj').forEach(l => l.style.display = (!q || l.dataset.busca.includes(q)) && (!fl || l.dataset.fl === fl) ? '' : 'none');
 }
 function animarBarras(lista) {
     document.querySelectorAll('[data-w]').forEach(b => { b.style.width = b.dataset.w + '%'; });
@@ -865,10 +1243,17 @@ function contarNumero(el, alvo) {
     (function f(ts) { const pr = Math.max(0, Math.min((ts - t0) / d, 1)), v = alvo * (1 - Math.pow(1 - pr, 3));
         el.innerHTML = v.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '<small>%</small>'; if (pr < 1) requestAnimationFrame(f); })(t0);
 }
-document.getElementById('busca').addEventListener('input', e => {
-    const q = e.target.value.toLowerCase().trim();
-    document.querySelectorAll('.lj').forEach(l => l.style.display = !q || l.dataset.busca.includes(q) ? '' : 'none');
-});
+document.getElementById('busca').addEventListener('input', filtrar);
+document.getElementById('selFl').addEventListener('change', filtrar);
+document.getElementById('lista').addEventListener('click', e => { const l = e.target.closest('.lj'); if (l) l.classList.toggle('aberto'); });
+document.querySelectorAll('#abas button').forEach(b => b.addEventListener('click', () => {
+    if (VISAO === b.dataset.v) return; VISAO = b.dataset.v; document.getElementById('busca').value = ''; render(); requestAnimationFrame(() => animarBarras(true));
+}));
+try {
+    const q = new URLSearchParams(location.search).get('adm');
+    if (q === 'sair') localStorage.removeItem('feras_adm'); else if (q === ADM_CHAVE) localStorage.setItem('feras_adm', '1');
+    ADM = localStorage.getItem('feras_adm') === '1';
+} catch (e) { try { ADM = new URLSearchParams(location.search).get('adm') === ADM_CHAVE; } catch (e2) {} }
 function atualizarBotaoSom() { document.getElementById('btnSom').style.opacity = somLigado ? 1 : .45; }
 document.getElementById('btnSom').addEventListener('click', () => { somLigado = !somLigado; try { localStorage.setItem('feras_som', somLigado ? '1' : '0'); } catch (e) {} atualizarBotaoSom(); });
 
