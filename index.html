@@ -478,6 +478,81 @@ button{font-family:inherit;cursor:pointer}
     .lj{grid-template-columns:30px 1fr auto;padding:10px}
 }
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ================= CELULAR ================= */
+.lb-c{display:none}
+@media (max-width:720px){
+    #app{padding:8px 12px calc(92px + env(safe-area-inset-bottom))}
+    /* cabeçalho compacto */
+    .topo{gap:10px;padding:6px 2px 12px}
+    .topo .mini-esc{width:44px;height:44px}
+    .topo h1{font-size:.98rem;letter-spacing:.02em;line-height:1.15}
+    .topo .st{font-size:.58rem;letter-spacing:.08em;line-height:1.4}
+    .topo .st i{width:16px;height:11px;margin-right:5px}
+    .topo .acoes{gap:6px}
+    .btn-ic{width:34px;height:34px}.btn-ic svg{width:15px;height:15px}
+    /* menu vira barra de abas embaixo, estilo app */
+    .telas{position:fixed;top:auto;left:0;right:0;bottom:0;margin:0;border-radius:20px 20px 0 0;padding:6px 6px calc(6px + env(safe-area-inset-bottom));gap:2px;overflow:visible;z-index:90;
+        background:rgba(4,8,22,.94);border:0;border-top:1px solid rgba(242,193,78,.3);box-shadow:0 -10px 30px rgba(0,0,0,.5)}
+    .telas button{flex:1 1 0;min-width:0;flex-direction:column;gap:3px;padding:8px 2px 7px;border-radius:12px;font-family:var(--texto);font-size:.58rem;letter-spacing:.02em;font-weight:800;text-transform:none}
+    .telas .ic{font-size:1.2rem;line-height:1}
+    .telas .lb-l{display:none}.telas .lb-c{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+    .telas button.on{box-shadow:0 2px 12px rgba(242,193,78,.3)}
+    /* campos com 16px: o iPhone não dá zoom ao tocar */
+    input,select,textarea,.busca,.lg-card input,.pick-busca input{font-size:16px!important}
+    /* cartões de cargo */
+    .cargo-head{padding:16px 14px}
+    .ch-top{flex-wrap:nowrap;gap:10px}
+    .ch-tit{font-size:.95rem;line-height:1.25}
+    .ch-sub{font-size:.7rem}
+    .ch-vaga{flex:0 0 auto;padding:6px 10px;font-size:.52rem;max-width:96px}
+    .ch-vaga b{font-size:1.25rem}
+    .ch-inds{gap:6px;margin-top:12px}
+    .ch-ind{font-size:.66rem;padding:5px 8px}
+    .ch-nota{font-size:.66rem}
+    /* tabelas cabem na tela */
+    .tb{font-size:.7rem}
+    .tb th{font-size:.52rem;letter-spacing:.05em;padding:5px 4px}
+    .tb td{padding:6px 4px}
+    .tb .mh{display:none}
+    .det-g{gap:18px}
+    /* ranking: lista rola dentro do cartão, linhas mais enxutas */
+    .lista{max-height:68vh;overscroll-behavior:contain;padding-right:2px}
+    .lj{grid-template-columns:28px 1fr auto;gap:8px;padding:10px 10px}
+    .lj .ps{font-size:.9rem}
+    .lj .n1{font-size:.84rem}
+    .lj .n2{font-size:.66rem}
+    .lj .n2 .selo{display:none}
+    .lj .pv{font-size:1.05rem}
+    .lj .rv{font-size:.56rem;max-width:84px;white-space:normal;line-height:1.2}
+    .lj .chip{font-size:.54rem;padding:2px 5px}
+    .rank-topo{gap:8px}
+    .rank-topo .sec-tit{min-width:0;width:100%;flex:1 1 100%}
+    .ord-info{font-size:.66rem}
+    .corte{font-size:.6rem}
+    /* pódio */
+    .pd .nome{white-space:normal;line-height:1.15;font-size:.74rem}
+    .podio-card .podio{padding-top:26px}
+    /* visão / seletor */
+    .visao-bar{flex-direction:column;align-items:stretch;gap:10px}
+    .vb-txt b{font-size:1rem}
+    .pick-pop{left:0;right:0;width:auto}
+    .pick-lista{max-height:52vh}
+    /* A FERA */
+    .fera-top{gap:10px}
+    .ft-tit b{font-size:1rem}
+    /* regras */
+    .rg-sec{font-size:.7rem;margin:18px 0 8px}
+    .rg-card{padding:14px}
+    .aviso-regras{font-size:.72rem}
+}
+@media (max-width:380px){
+    .topo h1{font-size:.88rem}
+    .telas button{font-size:.52rem}
+    .telas .ic{font-size:1.05rem}
+    .kpis{gap:6px}
+    .kpi .k-v{font-size:.95rem}
+}
 </style>
 </head>
 <body>
@@ -567,12 +642,12 @@ button{font-family:inherit;cursor:pointer}
     </header>
 
     <nav class="telas" id="telas">
-        <button data-t="regional"><span class="ic">🏢</span>DIRETORIA</button>
-        <button data-t="perfil" hidden><span class="ic">🐉</span>A FERA</button>
-        <button data-t="ger"><span class="ic">👔</span>GERENTES</button>
-        <button data-t="vend"><span class="ic">🤝</span>VENDEDORES</button>
-        <button data-t="sen"><span class="ic">⭐</span>ASS. SÊNIOR</button>
-        <button data-t="regras"><span class="ic">📜</span>REGRAS</button>
+        <button data-t="regional"><span class="ic">🏢</span><span class="lb-l">DIRETORIA</span><span class="lb-c">Diretoria</span></button>
+        <button data-t="perfil" hidden><span class="ic">🐉</span><span class="lb-l">A FERA</span><span class="lb-c">A Fera</span></button>
+        <button data-t="ger"><span class="ic">👔</span><span class="lb-l">GERENTES</span><span class="lb-c">Gerentes</span></button>
+        <button data-t="vend"><span class="ic">🤝</span><span class="lb-l">VENDEDORES</span><span class="lb-c">Vendedor</span></button>
+        <button data-t="sen"><span class="ic">⭐</span><span class="lb-l">ASS. SÊNIOR</span><span class="lb-c">Sênior</span></button>
+        <button data-t="regras"><span class="ic">📜</span><span class="lb-l">REGRAS</span><span class="lb-c">Regras</span></button>
     </nav>
 
     <!-- ===== MEU PERFIL (gerente · vendedor · sênior) ===== -->
@@ -636,7 +711,7 @@ button{font-family:inherit;cursor:pointer}
 /* =========================================================
    CONFIG
    ========================================================= */
-const API_URL = 'https://script.google.com/macros/s/AKfycbyFU7xRvfBX9alqWt5GfE_a3L8foXiHb8QOJGmn1YAkEO4mQg4onqb6KEmVdxkEeXuFcA/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycby61-UqrSrY3QE49kcT0D-zAYxjZYCTknwdu2YIx75mgnO7gAXSeZC1bne12-bZrmFz/exec';
 // O dash é da DIRETORIA VIRTUAL. REG_SEL = regional escolhida na visão Diretoria ('' = diretoria toda);
 // REG_FILTRO = filtro dos rankings. As lojas e regionais vêm da aba SERVIÇO.
 const DIRETORIA_NOME = 'Diretoria Virtual';
@@ -713,6 +788,19 @@ const COROA = '<svg viewBox="0 0 48 32"><path d="M4 28 L2 8 L14 18 L24 2 L34 18 
    ========================================================= */
 let AC = null, somLigado = true;
 try { somLigado = localStorage.getItem('feras_som') !== '0'; } catch (e) {}
+// Celular: o áudio só toca se for "destravado" dentro do toque. No iPhone, um áudio HTML silencioso em loop
+// coloca a página em modo mídia, e aí o som sai mesmo com a chave do silencioso ligada.
+let SILENCIO = null;
+function destravarAudio() {
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+    const a = ac(); if (!a) return;
+    try { const b = a.createBuffer(1, 1, 22050), s = a.createBufferSource(); s.buffer = b; s.connect(a.destination); s.start(0); } catch (e) {}
+    try {
+        if (!SILENCIO) { SILENCIO = new Audio('data:audio/wav;base64,UklGRmQGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YUAGAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA'); SILENCIO.loop = true; SILENCIO.setAttribute('playsinline', ''); }
+        const p = SILENCIO.play(); if (p && p.catch) p.catch(() => {});
+    } catch (e) {}
+}
+function pararSilencio() { try { if (SILENCIO) SILENCIO.pause(); } catch (e) {} }
 function ac() { if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } if (AC && AC.state === 'suspended') AC.resume(); return AC; }
 function saida(vol) { const a = ac(); const g = a.createGain(); g.gain.value = vol; g.connect(a.destination); return g; }
 function ruido(a, dur) { const b = a.createBuffer(1, a.sampleRate * dur, a.sampleRate), d = b.getChannelData(0); let ult = 0; for (let i = 0; i < d.length; i++) { const w = Math.random() * 2 - 1; ult = (ult + 0.02 * w) / 1.02; d[i] = ult * 3.5; } const s = a.createBufferSource(); s.buffer = b; return s; }
@@ -886,6 +974,7 @@ const fumaca = (() => {
 
 const ABERTURA_COM_MUSICA = false;   // true = usa o trecho 0:02–0:07 da música no lugar dos sons
 function iniciarIntro() {
+    if (somLigado) destravarAudio();
     if (ABERTURA_COM_MUSICA) return iniciarIntroMusica();
     ac();
     introRodando = true;
@@ -950,6 +1039,7 @@ function fecharIntro() {
     intro.classList.add('sai');
     try { sessionStorage.setItem('feras_intro', '1'); } catch (e) {}
     setTimeout(() => { intro.style.display = 'none'; if (fxIntro) fxIntro.parar(); fumaca.parar(); entrar(); }, 1050);
+    setTimeout(pararSilencio, 3000);
 }
 function reverIntro() {
     intro.style.display = 'flex'; intro.className = '';
@@ -1322,7 +1412,16 @@ try { SESSAO = JSON.parse(localStorage.getItem('feras_sessao') || 'null'); } cat
 // telas de cada um: quem não é admin ganha "Meu perfil" como primeira tela
 const telasDe = u => !u ? [] : u.nivel === 'adm' ? ['regional', 'perfil'].concat(u.telas.filter(t => t !== 'perfil' && t !== 'regional')) : ['perfil'].concat(u.telas.filter(t => t !== 'perfil' && t !== 'regional'));
 const permitido = t => !!(SESSAO && SESSAO.usuario && telasDe(SESSAO.usuario).includes(t));
+// aparelho de quem entrou (vai para a aba LOGS ACESSO): "Celular · Android · Chrome", "Computador · Windows · Edge"…
+function aparelho() {
+    const ua = navigator.userAgent || '';
+    const tipo = /iPad|Tablet/i.test(ua) ? 'Tablet' : /Mobi|Android|iPhone/i.test(ua) ? 'Celular' : 'Computador';
+    const so = /Android/i.test(ua) ? 'Android' : /iPhone|iPad|iOS/i.test(ua) ? 'iPhone' : /Windows/i.test(ua) ? 'Windows' : /Mac OS/i.test(ua) ? 'Mac' : /Linux/i.test(ua) ? 'Linux' : '';
+    const nav = /Edg\//.test(ua) ? 'Edge' : /OPR\//.test(ua) ? 'Opera' : /SamsungBrowser/.test(ua) ? 'Samsung' : /Chrome\//.test(ua) ? 'Chrome' : /Firefox\//.test(ua) ? 'Firefox' : /Safari\//.test(ua) ? 'Safari' : '';
+    return [tipo, so, nav].filter(Boolean).join(' · ');
+}
 async function api(corpo) {
+    corpo = Object.assign({ disp: aparelho() }, corpo);
     const r = await fetch(API_URL, { method: 'POST', body: JSON.stringify(corpo), cache: 'no-store' });   // text/plain: sem preflight
     return r.json();
 }
@@ -1534,7 +1633,7 @@ function irPara(t, rolar) {
     try { history.replaceState(null, '', '#' + HASH[t]); } catch (e) {}
     renderTela();
     if (appAnimado) requestAnimationFrame(() => animarBarras(true));
-    if (rolar) { const n = document.getElementById('telas'); window.scrollTo({ top: Math.max(0, n.offsetTop - 8), behavior: 'smooth' }); }
+    if (rolar) { const n = document.getElementById('telas'), fixo = getComputedStyle(n).position === 'fixed'; window.scrollTo({ top: fixo ? 0 : Math.max(0, n.offsetTop - 8), behavior: 'smooth' }); }
 }
 const CARGOS = {
     ger: { tit: 'GERENTE DE LOJA', sub: 'Gerente e Gerente Adjunto · disputa entre as lojas das 7 regionais da diretoria', vagas: 2, vagaTxt: 'vagas por diretoria',
@@ -1652,9 +1751,9 @@ function renderReg() {
     if (!ADM) { el.innerHTML = head + `<div class="ch-corpo meses-lin">🔒 Os pontos das regionais ficam visíveis só para admin.</div>`; return; }
     const R = sel ? CAMP.regs.find(x => x.r === sel) : null, mesAt = CAMP.atual ? CAMP.atual.nome.toUpperCase() : 'MÊS';
     const tabela = `<div class="det-t" style="margin-top:18px">RANKING DAS REGIONAIS · ${esc(DIRETORIA_NOME.toUpperCase())} · 1 VAGA</div>
-        <table class="tb tb-click"><tr><th>#</th><th>REGIONAL</th><th class="n">LOJAS</th><th class="n">SERVIÇOS</th><th class="n">${esc(mesAt)}</th><th class="n">ACUMULADO</th></tr>
+        <table class="tb tb-click"><tr><th>#</th><th>REGIONAL</th><th class="n mh">LOJAS</th><th class="n">SERVIÇOS</th><th class="n mh">${esc(mesAt)}</th><th class="n">ACUMULADO</th></tr>
         ${CAMP.regs.map((x, i) => { const sv = x.ult ? x.ult.serv : null, n = FILIAIS.filter(f => INFO[f].regional === x.r && SERV_ATUAL[f] && SERV_ATUAL[f].total.m > 0).length;
-            return `<tr data-reg="${esc(x.r)}"${x.r === sel ? ' class="tot"' : ''}><td>${i + 1}º${i === 0 ? ' 🇭🇷' : ''}</td><td>Regional ${esc(nomeReg(x.r))}</td><td class="n">${n}</td><td class="n cor-${sv ? corDe(sv.p) : 'pend'}">${sv ? pctTxt(sv.p) : '—'}</td><td class="n">${ptsTxt(x.ult ? x.ult.pts : 0)}</td><td class="n">${ptsTxt(x.total)}</td></tr>`; }).join('')}</table>
+            return `<tr data-reg="${esc(x.r)}"${x.r === sel ? ' class="tot"' : ''}><td>${i + 1}º${i === 0 ? ' 🇭🇷' : ''}</td><td>${esc(nomeReg(x.r))}</td><td class="n mh">${n}</td><td class="n cor-${sv ? corDe(sv.p) : 'pend'}">${sv ? pctTxt(sv.p) : '—'}</td><td class="n mh">${ptsTxt(x.ult ? x.ult.pts : 0)}</td><td class="n">${ptsTxt(x.total)}</td></tr>`; }).join('')}</table>
         <div class="meses-lin" style="margin-top:8px">Toque numa regional para ver o perfil da fera · use o seletor no topo para trocar a visão · 🔒 visão de admin</div>`;
     if (!R || !R.ult) { el.innerHTML = head + `<div class="ch-corpo">${tabela}</div>`; }
     else el.innerHTML = head + `<div class="ch-corpo">
@@ -1834,8 +1933,8 @@ function perfilLoja(f, ehMeu) {
             <div><div class="det-t">${esc((g.ultMes || {}).nome || '').toUpperCase()}${g.ultMes && g.ultMes.st === 'atual' ? ' (PROJEÇÃO)' : ''}</div>${tabelaInds(g.ult)}</div>
             <div><div class="det-t">ACUMULADO</div>${tabelaMeses(g.meses, g.total)}</div></div></section>
         <section class="card cargo-head"><div class="det-t">EQUIPE · VENDEDORES DA FL ${esc(f)}</div>
-            ${equipe.length ? `<table class="tb tb-click"><tr><th>NA DIRETORIA</th><th>VENDEDOR</th><th class="n">SERVIÇOS</th><th class="n">${esc((CAMP.atual || {}).nome || 'MÊS').toUpperCase()}</th><th class="n">ACUMULADO</th></tr>
-            ${equipe.map(({ o, k }) => `<tr data-fera="vend" data-id="${esc(o.key)}"${k < 2 ? ' class="tot"' : ''}><td>${k + 1}º${k < 2 ? ' 🇭🇷' : ''}</td><td>${esc(nomeCurto(o.nome))}</td><td class="n cor-${o.ult ? corDe(o.ult.serv.p) : 'pend'}">${o.ult ? pctTxt(o.ult.serv.p) : '—'}</td><td class="n">${o.ult ? ptsTxt(o.ult.pts) : '—'}</td><td class="n">${ptsTxt(o.total)}</td></tr>`).join('')}</table>
+            ${equipe.length ? `<table class="tb tb-click"><tr><th>DIRET.</th><th>VENDEDOR</th><th class="n">SERVIÇOS</th><th class="n mh">${esc((CAMP.atual || {}).nome || 'MÊS').toUpperCase()}</th><th class="n">ACUMULADO</th></tr>
+            ${equipe.map(({ o, k }) => `<tr data-fera="vend" data-id="${esc(o.key)}"${k < 2 ? ' class="tot"' : ''}><td>${k + 1}º${k < 2 ? ' 🇭🇷' : ''}</td><td>${esc(nomeCurto(o.nome))}</td><td class="n cor-${o.ult ? corDe(o.ult.serv.p) : 'pend'}">${o.ult ? pctTxt(o.ult.serv.p) : '—'}</td><td class="n mh">${o.ult ? ptsTxt(o.ult.pts) : '—'}</td><td class="n">${ptsTxt(o.total)}</td></tr>`).join('')}</table>
             <div class="meses-lin" style="margin-top:8px">Vendedores com meta de serviços batida contam para o indicador "Vendedores na meta" da loja.${podeVer('vend') ? ' Toque num vendedor para ver o perfil.' : ''}</div>`
             : '<div class="meses-lin">Os vendedores da loja aparecem aqui quando a aba VENDEDORES tiver dados.</div>'}</section>`;
 }
@@ -1882,8 +1981,8 @@ function perfilRegional(r) {
             <div><div class="det-t">${esc((R.ultMes || {}).nome || '').toUpperCase()}${R.ultMes && R.ultMes.st === 'atual' ? ' (PROJEÇÃO)' : ''}</div>${tabelaInds(R.ult)}</div>
             <div><div class="det-t">ACUMULADO</div>${tabelaMeses(R.meses, R.total)}</div></div></section>
         <section class="card cargo-head"><div class="det-t">LOJAS DA REGIONAL · POSIÇÃO NA DIRETORIA</div>
-            <table class="tb tb-click"><tr><th>NA DIRETORIA</th><th>LOJA</th><th class="n">SERVIÇOS</th><th class="n">${esc((CAMP.atual || {}).nome || 'MÊS').toUpperCase()}</th><th class="n">ACUMULADO</th></tr>
-            ${lojas.map(({ g, k }) => `<tr data-fera="ger" data-id="${esc(g.f)}"${k < 2 ? ' class="tot"' : ''}><td>${k + 1}º${k < 2 ? ' 🇭🇷' : ''}</td><td>${esc(rotuloFl(g.f, false))}</td><td class="n cor-${g.ult ? corDe(g.ult.serv.p) : 'pend'}">${g.ult ? pctTxt(g.ult.serv.p) : '—'}</td><td class="n">${g.ult ? ptsTxt(g.ult.pts) : '—'}</td><td class="n">${ptsTxt(g.total)}</td></tr>`).join('')}</table></section>`;
+            <table class="tb tb-click"><tr><th>DIRET.</th><th>LOJA</th><th class="n">SERVIÇOS</th><th class="n mh">${esc((CAMP.atual || {}).nome || 'MÊS').toUpperCase()}</th><th class="n">ACUMULADO</th></tr>
+            ${lojas.map(({ g, k }) => `<tr data-fera="ger" data-id="${esc(g.f)}"${k < 2 ? ' class="tot"' : ''}><td>${k + 1}º${k < 2 ? ' 🇭🇷' : ''}</td><td>${esc(rotuloFl(g.f, false))}</td><td class="n cor-${g.ult ? corDe(g.ult.serv.p) : 'pend'}">${g.ult ? pctTxt(g.ult.serv.p) : '—'}</td><td class="n mh">${g.ult ? ptsTxt(g.ult.pts) : '—'}</td><td class="n">${ptsTxt(g.total)}</td></tr>`).join('')}</table></section>`;
 }
 function renderPerfil() {
     const el = document.getElementById('tPerfil'), u = SESSAO && SESSAO.usuario;
@@ -2008,7 +2107,24 @@ document.querySelectorAll('#telas button').forEach(b => b.addEventListener('clic
 window.addEventListener('hashchange', () => { if (!SESSAO) return; const h = location.hash.slice(1); const t = Object.keys(HASH).find(k => HASH[k] === h); if (t && t !== TELA) irPara(t, false); });
 // acesso: definido pelo login (ver SESSÃO)
 function atualizarBotaoSom() { document.getElementById('btnSom').style.opacity = somLigado ? 1 : .45; }
-document.getElementById('btnSom').addEventListener('click', () => { somLigado = !somLigado; try { localStorage.setItem('feras_som', somLigado ? '1' : '0'); } catch (e) {} atualizarBotaoSom(); });
+document.getElementById('btnSom').addEventListener('click', () => { somLigado = !somLigado; if (somLigado) { destravarAudio(); setTimeout(pararSilencio, 1500); } try { localStorage.setItem('feras_som', somLigado ? '1' : '0'); } catch (e) {} atualizarBotaoSom(); });
+
+/* ---------- escala automática para notebook / monitor ----------
+   O dash foi desenhado para ~1240–1440 px. Em notebooks menores (ou com escala do Windows em 125%/150%)
+   ele encolhe um pouco para manter o mesmo desenho; em monitores grandes ele cresce para não ficar pequeno
+   no meio da tela. Celular (até 720 px) usa o layout próprio, sem escala. */
+function ajustarEscala() {
+    const w = window.innerWidth;
+    let z = 1;
+    if (w > 1500) z = Math.min(1.6, w / 1440);
+    else if (w >= 900 && w < 1240) z = Math.max(.8, w / 1240);
+    z = Math.round(z * 100) / 100;
+    ['app', 'login'].forEach(id => { const el = document.getElementById(id); if (el) el.style.zoom = z === 1 ? '' : z; });
+    document.documentElement.style.setProperty('--escala', z);
+}
+ajustarEscala();
+let _tEsc = null;
+window.addEventListener('resize', () => { clearTimeout(_tEsc); _tEsc = setTimeout(ajustarEscala, 120); });
 
 /* =========================================================
    INÍCIO
