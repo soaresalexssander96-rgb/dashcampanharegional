@@ -711,7 +711,7 @@ button{font-family:inherit;cursor:pointer}
 /* =========================================================
    CONFIG
    ========================================================= */
-const API_URL = 'https://script.google.com/macros/s/AKfycby61-UqrSrY3QE49kcT0D-zAYxjZYCTknwdu2YIx75mgnO7gAXSeZC1bne12-bZrmFz/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxxAL-dlPzMBVRT26r5zesyrcntZa3q9_inhZOgGg3yxW3q5iQNgSU0Xsx0ux4YrkRZzg/exec';
 // O dash é da DIRETORIA VIRTUAL. REG_SEL = regional escolhida na visão Diretoria ('' = diretoria toda);
 // REG_FILTRO = filtro dos rankings. As lojas e regionais vêm da aba SERVIÇO.
 const DIRETORIA_NOME = 'Diretoria Virtual';
@@ -1065,7 +1065,7 @@ const CAMP_MESES = [
 // Seguros do Bloco Pula pra 10 que contam para a Globalidade
 const P10 = ['gar', 'casa', 'compra', 'rf', 'saude'];
 // Aba LOJAS:      A FILIAL | B META 1P | C REAL 1P | D META APROV % | E REAL APROV % | F % CARTÃO TERCEIROS   (linha FILIAL = REGIONAL para os números da regional)
-// Aba VENDEDORES: A FILIAL | B MATRÍCULA | C NOME | D META SERV | E REAL SERV | F META 1P | G REAL 1P | H APROV % | I QTD CASA | J QTD BEM ESTAR | K % CARTÃO TERCEIROS | L FOTO
+// Aba VENDEDORES: A FILIAL | B ID | C NOME | D META SERV | E REAL SERV | F META 1P | G REAL 1P | H APROV % | I QTD CASA | J QTD BEM ESTAR | K % CARTÃO TERCEIROS | L FOTO
 // Fechamento: ao virar o mês, duplicar SERVIÇO, LOJAS e VENDEDORES como "SERVIÇO NOV", "LOJAS NOV", "VENDEDORES NOV" (colar só valores)
 
 /* =========================================================
@@ -1214,7 +1214,28 @@ function lerLojas(rows) {
     });
     return { map, regs, dir };
 }
+// cargo "Vendedor Especial" aparece como Liderança
+const rotCargo = c => /ESPECIAL/i.test(c || '') ? 'Liderança' : 'Vendedor';
+// Aba VEND SERVIÇO = export cru do DETALHADO (tabela por colaborador): lida pelo nome do cabeçalho.
+// Só família Vendedor (Vendedor + Liderança) e só quem tem meta ativa (PMTPULAPRA10 > 0) entra no dash.
+function lerVendExport(rows) {
+    const h = rows[0].map(x => normAba(x).replace(/\s+/g, '')), ix = n => h.indexOf(n);
+    const c = { f: ix('FILIAL'), id: ix('CDI'), nome: ix('NOME'), cargo: ix('CARGO'), fam: ix('CARGO_FAMILIA'), venda: ix('VENDA'),
+        meta: ix('PMTPULAPRA10'), serv: ix('SERVICOS'), casa: ix('QTDACASATOTAL'), bem: ix('QTDPSTOTAL') };
+    const out = [];
+    rows.slice(1).forEach(l => {
+        if (!l) return;
+        const f = limpa(l[c.f]); if (!f || !FILIAIS.includes(f)) return;
+        if (c.fam >= 0 && normAba(l[c.fam]) !== 'VENDEDOR') return;
+        const mServ = num(l[c.meta]); if (!(mServ > 0)) return;          // sem meta ativa não sobe pro dash
+        const nome = String(l[c.nome] || '').trim(), mat = String(l[c.id] == null ? '' : l[c.id]).trim();
+        out.push({ f, mat, nome, cargo: String(l[c.cargo] || '').trim(), mServ, rServ: num(l[c.serv]), m1p: 0, r1p: num(l[c.venda]), aprov: null,
+            casa: c.casa >= 0 ? num(l[c.casa]) : 0, bem: c.bem >= 0 ? num(l[c.bem]) : 0, cartao: null, foto: '' });
+    });
+    return out;
+}
 function lerVend(rows) {
+    if (rows && rows[0] && rows[0].some(x => normAba(x).replace(/\s+/g, '') === 'PMTPULAPRA10')) return lerVendExport(rows);
     const out = [];
     (rows || []).forEach(l => {
         if (!l) return;
@@ -1226,8 +1247,54 @@ function lerVend(rows) {
     return out;
 }
 
-// Aba SENIORES: A FILIAL | B MATRÍCULA | C NOME | D CARGO | E VENDA SERVIÇOS P10 (R$) | F META SUPER PROTEGIDO | G REAL SUPER PROTEGIDO | H QTD CASA PROTEGIDA | I QTD BEM ESTAR | J FOTO
+// Aba SEN SERVIÇO = export cru do DETALHADO (CARGO = Assist.Sr e Líder Comercial, EMPRESA INTEIRA), lido pelo cabeçalho.
+// Lojas de fora da diretoria entram no INFO só com a regional/diretoria (para o rótulo "FL 1613 · Regional Grande Rio").
+function lerSenExport(rows) {
+    const h = rows[0].map(x => normAba(x).replace(/\s+/g, '')), ix = n => h.indexOf(n);
+    const c = { f: ix('FILIAL'), id: ix('CDI'), nome: ix('NOME'), cargo: ix('CARGO'), reg: ix('REGIONAL'), dir: ix('DIRETORIA'),
+        serv: ix('SERVICOS'), casa: ix('QTDACASATOTAL'), bem: ix('QTDPSTOTAL') };
+    const out = [];
+    rows.slice(1).forEach(l => {
+        if (!l) return;
+        const f = limpa(l[c.f]); if (!f) return;
+        const cargo = normAba(l[c.cargo]); if (!/SR|SENIOR|LIDER COMERCIAL/.test(cargo)) return;
+        const nome = String(l[c.nome] || '').trim(), mat = String(l[c.id] == null ? '' : l[c.id]).trim();
+        if (!nome && !mat) return;
+        if (!INFO[f]) INFO[f] = { cidade: '', regional: normAba(l[c.reg] || ''), diretoria: normAba(l[c.dir] || ''), fora: true };
+        out.push({ f, mat, nome, cargo: /LIDER/.test(cargo) ? 'Líder Comercial' : 'Assistente Sênior', serv: num(l[c.serv]), mSup: 0, rSup: 0,
+            casa: c.casa >= 0 ? num(l[c.casa]) : 0, bem: c.bem >= 0 ? num(l[c.bem]) : 0, foto: '' });
+    });
+    return out;
+}
+// Super Protegido do sênior (Indicadores Crédito > SUPER):
+//   SUPER SEN     = PERFORMANCE COLABORADOR (FILIAL, CARGO, ID, VENDEDOR, REALIZADO) — família Apoio I, Assist.Sr + Líder Comercial
+//   SUPER FILIAIS = tabela por filial (FILIAL, COTA TOTAL, REALIZADO, PROJ. ATING, PMT) — o sênior responde pela meta da filial
+// projeção do sênior = (realizado dele ÷ cota da filial) × fator da filial (PROJ. ATING ÷ (REALIZADO ÷ COTA))
+function aplicarSuper(sen, rowsSen, rowsFil) {
+    if (!rowsSen || !rowsSen.length || !rowsFil || !rowsFil.length) return false;
+    const hix = (rows, n) => rows[0].map(x => normAba(x).replace(/\s+/g, '')).indexOf(n);
+    const fF = hix(rowsFil, 'FILIAL'), fM = hix(rowsFil, 'COTATOTAL'), fR = hix(rowsFil, 'REALIZADO'), fP = hix(rowsFil, 'PROJ.ATING');
+    const fil = {}; let sm = 0, sr = 0;
+    rowsFil.slice(1).forEach(l => { const f = limpa(l[fF]); if (!f) return; const m = num(l[fM]), r = num(l[fR]), p = pctV(l[fP]);
+        fil[f] = { m, r, p }; if (m > 0 && r > 0 && p > 0) { sm += m * p; sr += r; } });
+    const fDir = sr > 0 ? sm / sr : 1;
+    const sF = hix(rowsSen, 'FILIAL'), sI = hix(rowsSen, 'ID'), sN = hix(rowsSen, 'VENDEDOR'), sR = hix(rowsSen, 'REALIZADO');
+    const porId = {}, porNome = {};
+    rowsSen.slice(1).forEach(l => { const f = limpa(l[sF]), id = String(l[sI] == null ? '' : l[sI]).trim(), r = num(l[sR]);
+        if (id) porId[id] = (porId[id] || 0) + r;
+        const pn = normNome(l[sN]).split(' ')[0]; if (f && pn) porNome[f + '|' + pn] = (porNome[f + '|' + pn] || 0) + r; });
+    sen.forEach(x => {
+        const F = fil[x.f]; if (!F || !(F.m > 0)) return;
+        let r = x.mat && porId[x.mat] != null ? porId[x.mat] : porNome[x.f + '|' + normNome(x.nome).split(' ')[0]];
+        if (r == null) r = 0;
+        const fat = F.r > 0 && F.p > 0 ? F.m * F.p / F.r : fDir;
+        x.mSup = F.m; x.rSup = r; x.pSup = r / F.m * fat;
+    });
+    return true;
+}
+// Aba SENIORES: A FILIAL | B ID | C NOME | D CARGO | E VENDA SERVIÇOS P10 (R$) | F META SUPER PROTEGIDO | G REAL SUPER PROTEGIDO | H QTD CASA PROTEGIDA | I QTD BEM ESTAR | J FOTO
 function lerSen(rows) {
+    if (rows && rows[0] && rows[0].some(x => normAba(x).replace(/\s+/g, '') === 'QTDPSTOTAL')) return lerSenExport(rows);
     const out = [];
     (rows || []).forEach(l => {
         if (!l) return;
@@ -1245,7 +1312,7 @@ function pontuarSen(x) {
     const trava = x.serv >= 1500, blocos = Math.floor(x.serv / 1500), pB = Math.min(150, blocos * 30);
     const inds = [
         { cod: 'P10', nome: 'A cada R$ 1.500 em serviços (Bloco P10)', base: 150, pts: pB, mu: pB > 0 ? 1 : 0, txt: `${blocos} × 30${blocos * 30 > 150 ? ' (teto)' : ''}`, det: `${brl(x.serv)} vendidos · máx. 150 pts/mês` },
-        indMeta('SUPER', 'Meta individual Super Protegido', 30, x.rSup, x.mSup, fmtBrl),
+        x.pSup != null ? Object.assign(indProj('SUPER', 'Meta Super Protegido (meta da filial)', 30, { m: x.mSup, r: x.rSup, p: x.pSup }), { det: `projeção · ${x.rSup} de ${Math.round(x.mSup * 10) / 10} Super da FL ${x.f}` }) : indPend('SUPER', 'Meta Super Protegido (meta da filial)', 30),
         indMeta('CASA', '10 Seguros Casa Protegida', 20, x.casa, 10, r => `${r} de 10`),
         indMeta('BEM', '5 Seguros Bem Estar', 20, x.bem, 5, r => `${r} de 5`)
     ];
@@ -1255,7 +1322,7 @@ function pontuarSen(x) {
 function pontuarVend(v) {
     if (!(v.mServ > 0)) return null;                                   // 11.2: vendedor sem meta não pontua
     const inds = [
-        indMeta('SERV', 'Serviços individual (Bloco P10)', 40, v.rServ, v.mServ, fmtBrl),
+        indProj('SERV', 'Serviços individual (Bloco P10)', 40, { m: v.mServ, r: v.rServ, p: v.pServ }),
         indMeta('1P', 'Vendas individual 1P', 20, v.r1p, v.m1p, fmtBrl),
         v.aprov == null ? indPend('APROV', 'Aproveitamento Gar+RF (meta 40%)', 20)
                         : indMeta('APROV', 'Aproveitamento Gar+RF (meta 40%)', 20, v.aprov, .4, r => `${pctTxt(r)} de 40%`),
@@ -1263,13 +1330,13 @@ function pontuarVend(v) {
         indMeta('BEM', '5 Seguros Bem Estar', 10, v.bem, 5, r => `${r} de 5`)
     ];
     const bonus = bonusCartao(v.cartao);
-    return { inds, bonus, cartao: v.cartao, pts: somaInds(inds) + bonus, serv: { m: v.mServ, r: v.rServ, p: v.rServ / v.mServ } };
+    return { inds, bonus, cartao: v.cartao, pts: somaInds(inds) + bonus, serv: { m: v.mServ, r: v.rServ, p: v.pServ } };
 }
 function pontuarLoja(f, M) {
     const s = M.serv[f], L = M.lojas.map[f];
     const vs = M.vend.filter(v => v.f === f && v.mServ > 0);
     const n = vs.length, pctN = n <= 20 ? .5 : .4, need = tetoInt(n * pctN);
-    const bat = vs.filter(v => r4(v.rServ / v.mServ) >= 1).length;
+    const bat = vs.filter(v => r4(v.pServ) >= 1).length;
     const comMeta = P10.filter(id => s[id].m > 0), naMeta = comMeta.filter(id => r4(s[id].p) >= 1);
     const inds = [
         indProj('SERV', 'Serviços loja (Bloco P10)', 30, s.total),
@@ -1299,7 +1366,18 @@ function pontuarReg(M, lojas, R) {
     ];
     return { inds, bonus: 0, cartao: null, pts: somaInds(inds), serv: tot.total };
 }
+// fator de projeção de cada filial (curva da meta até o dia); loja sem realizado usa o da diretoria
+function projetarVend(M) {
+    let sm = 0, sr = 0;
+    Object.values(M.serv).forEach(s => { if (s.total.m > 0 && s.total.r > 0) { sm += s.total.m * s.total.p; sr += s.total.r; } });
+    const fDir = sr > 0 ? sm / sr : 1;
+    M.vend.forEach(v => {
+        const s = M.serv[v.f], t = s && s.total, fat = t && t.m > 0 && t.r > 0 ? t.m * t.p / t.r : fDir;
+        v.pServ = v.mServ > 0 ? v.rServ / v.mServ * fat : 0;
+    });
+}
 function pontuarMes(M) {
+    projetarVend(M);
     const lojas = FILIAIS.filter(f => M.serv[f] && M.serv[f].total.m > 0).map(f => pontuarLoja(f, M));
     const porReg = {};
     lojas.forEach(l => { const r = (INFO[l.f] || {}).regional || '?'; (porReg[r] = porReg[r] || []).push(l); });
@@ -1323,12 +1401,13 @@ function montarCampanha(js) {
     const meses = CAMP_MESES.map(cm => {
         const ord = cm.a * 12 + cm.m, sF = acharAba(abas, 'SERVICO', cm.k);
         let st, src = null;
-        if (sF) { st = 'fechado'; src = { serv: sF, lojas: acharAba(abas, 'LOJAS', cm.k), vend: acharAba(abas, 'VENDEDORES', cm.k), sen: acharAba(abas, 'SENIORES', cm.k) }; }
-        else if (ord === refOrd) { st = 'atual'; src = { serv: js.servico, lojas: abas['LOJAS'], vend: abas['VENDEDORES'], sen: abas['SENIORES'] }; }
+        if (sF) { st = 'fechado'; src = { serv: sF, lojas: acharAba(abas, 'LOJAS', cm.k), vend: acharAba(abas, 'VEND SERVICO', cm.k) || acharAba(abas, 'VENDEDORES', cm.k), sen: acharAba(abas, 'SEN SERVICO', cm.k) || acharAba(abas, 'SENIORES', cm.k), supSen: acharAba(abas, 'SUPER SEN', cm.k), supFil: acharAba(abas, 'SUPER FILIAIS', cm.k) }; }
+        else if (ord === refOrd) { st = 'atual'; src = { serv: js.servico, lojas: abas['LOJAS'], vend: abas['VEND SERVICO'] || abas['VENDEDORES'], sen: abas['SEN SERVICO'] || abas['SENIORES'], supSen: abas['SUPER SEN'], supFil: abas['SUPER FILIAIS'] }; }
         else st = ord < refOrd ? 'pendente' : 'futuro';
         let M = null, res = null;
         if (src) {
             M = { serv: lerServico(src.serv), lojas: lerLojas(src.lojas), vend: lerVend(src.vend), sen: lerSen(src.sen), temLojas: !!src.lojas, temVend: !!src.vend, temSen: !!src.sen };
+            M.temSuper = aplicarSuper(M.sen, src.supSen, src.supFil);
             res = pontuarMes(M);
         }
         return Object.assign({}, cm, { ord, st, M, res });
@@ -1345,7 +1424,7 @@ function montarCampanha(js) {
         me.res.vend.forEach(({ v, sc }) => {
             const key = v.mat || (v.f + '|' + v.nome.toLowerCase());
             const o = vend[key] || (vend[key] = { key, total: 0, fat: 0, meses: [], temMeta: false });
-            o.f = v.f; o.nome = v.nome; o.mat = v.mat; if (v.foto) o.foto = v.foto;     // 13: pontos são do colaborador, filial = a mais recente
+            o.f = v.f; o.nome = v.nome; o.mat = v.mat; if (v.cargo) o.cargo = v.cargo; if (v.foto) o.foto = v.foto;     // 13: pontos são do colaborador, filial = a mais recente
             o.fat += v.rServ;
             if (sc) { o.temMeta = true; o.total += sc.pts * me.peso; }
             o.meses.push(Object.assign({ pts: sc ? sc.pts : 0, semMeta: !sc }, mm)); o.ult = sc; o.ultMes = me;
@@ -1624,7 +1703,7 @@ function renderTela() {
     if (!dadosProntos || !CAMP) return;
     if (TELA === 'regional') renderReg();
     else if (TELA === 'perfil') renderPerfil();
-    else { VISAO = TELA; renderCargo(); const it = itens(); renderPodio(it); renderLista(it); }
+    else { VISAO = TELA; renderCargo(); const todos = itens(), it = VISAO === 'sen' ? todos.filter(x => !x.fora) : todos; renderPodio(VISAO === 'sen' ? todos : it); renderLista(it); }
 }
 function irPara(t, rolar) {
     if (!HASH[t]) t = 'regional';
@@ -1639,11 +1718,11 @@ const CARGOS = {
     ger: { tit: 'GERENTE DE LOJA', sub: 'Gerente e Gerente Adjunto · disputa entre as lojas das 7 regionais da diretoria', vagas: 2, vagaTxt: 'vagas por diretoria',
         inds: [['Serviços loja (P10)', 30], ['Vendas 1P loja', 20], ['Vendedores na meta de serviços', 20], ['Aproveitamento Gar+RF', 20], ['Globalidade', 10]], extra: 'Cartão de terceiros até +5',
         nota: 'Vendedores na meta: até 20 vendedores com meta, 50% deles; acima de 20, 40%. Desempate: % da meta de serviços da loja no período.' },
-    vend: { tit: 'VENDEDOR COM META', sub: 'Vendedor e Vendedor Especial · disputa entre as 7 regionais da diretoria · sem meta no sistema não pontua', vagas: 2, vagaTxt: 'vagas por diretoria',
+    vend: { tit: 'VENDEDOR COM META', sub: 'Vendedor e Liderança · disputa entre as 7 regionais da diretoria · sem meta no sistema não pontua', vagas: 2, vagaTxt: 'vagas por diretoria',
         inds: [['Serviços individual (P10)', 40], ['Vendas 1P', 20], ['Aproveitamento 40% Gar+RF', 20], ['10 Casa Protegida', 10], ['5 Bem Estar', 10]], extra: 'Cartão de terceiros até +5',
         nota: 'Desempate: maior faturamento de seguros (P10) no período.' },
-    sen: { tit: 'ASSISTENTE SÊNIOR · LÍDER COMERCIAL', sub: 'Concorre com a empresa toda · aqui aparecem só os da diretoria', vagas: 1, vagaTxt: 'vaga na empresa',
-        inds: [['A cada R$ 1.500 em serviços (P10)', '30 (máx. 150)'], ['Meta Super Protegido', 30], ['10 Casa Protegida', 20], ['5 Bem Estar', 20]], extra: null,
+    sen: { tit: 'ASSISTENTE SÊNIOR · LÍDER COMERCIAL', sub: 'Concorre com a empresa toda · pódio da empresa · na lista, os da diretoria com a posição na empresa', vagas: 1, vagaTxt: 'vaga na empresa',
+        inds: [['A cada R$ 1.500 em serviços (P10)', '30 (máx. 150)'], ['Meta Super Protegido (da filial)', 30], ['10 Casa Protegida', 20], ['5 Bem Estar', 20]], extra: null,
         nota: '<span class="trava">Trava:</span> só pontua no mês em que vender pelo menos R$ 1.500 em seguros do P10. Desempate: maior faturamento de seguros (P10) no período.' }
 };
 function cabecalhoCargo(c) {
@@ -1655,11 +1734,11 @@ function renderCargo() { document.getElementById('cargoHead').innerHTML = cabeca
 
 /* itens do ranking no formato comum */
 function itens() {
-    if (VISAO === 'vend' || VISAO === 'sen') return CAMP[VISAO].map(o => {
+    if (VISAO === 'vend' || VISAO === 'sen') return CAMP[VISAO].map((o, k) => {
         const inf = INFO[o.f] || {};
-        return { id: o.key, f: o.f, reg: inf.regional || '', titulo: nomeCurto(o.nome) || (VISAO === 'sen' ? 'Assistente' : 'Vendedor'), sub: rotuloFl(o.f),
+        return { id: o.key, pos: k + 1, fora: !!inf.fora, f: o.f, reg: inf.regional || '', titulo: nomeCurto(o.nome) || (VISAO === 'sen' ? 'Assistente' : 'Vendedor'), sub: (VISAO === 'vend' ? rotCargo(o.cargo) + ' · ' : VISAO === 'sen' && o.cargo ? o.cargo + ' · ' : '') + rotuloFl(o.f),
             total: o.total, ult: o.ult, ultMes: o.ultMes, meses: o.meses, servP: !o.ult ? 0 : VISAO === 'sen' ? (o.ult.trava ? 1 : 0) : o.ult.serv.p,
-            busca: `fl ${o.f} ${inf.cidade || ''} ${nomeReg(inf.regional)} ${o.nome} ${o.mat}`.toLowerCase() };
+            busca: `fl ${o.f} ${inf.cidade || ''} ${nomeReg(inf.regional)} ${o.nome}`.toLowerCase() };
     });
     return CAMP.ger.map(g => {
         const inf = INFO[g.f] || {};
@@ -1716,12 +1795,12 @@ function renderLista(it) {
     }
     const pend = CAMP.meses.filter(m => m.st === 'pendente');
     if (pend.length) avisos.push(`falta o fechamento de <b>${pend.map(m => m.nome).join(', ')}</b> (abas "SERVIÇO ${pend[0].k}", "LOJAS ${pend[0].k}" e "VENDEDORES ${pend[0].k}")`);
-    document.getElementById('ordInfo').innerHTML = `Ranking da <b>diretoria</b> (7 regionais) por <b>pontos acumulados</b> · a posição é sempre na diretoria, mesmo filtrando uma regional · <b>toque numa fera</b> para ver o perfil`
+    document.getElementById('ordInfo').innerHTML = (VISAO === 'sen' ? `Ranking da <b>empresa toda</b> (${CAMP.sen.length} assistentes) por <b>pontos acumulados</b> · aqui aparecem os da diretoria com a <b>posição na empresa</b> · <b>toque numa fera</b> para ver o perfil` : `Ranking da <b>diretoria</b> (7 regionais) por <b>pontos acumulados</b> · a posição é sempre na diretoria, mesmo filtrando uma regional · <b>toque numa fera</b> para ver o perfil`)
         + avisos.map(a => `<div class="aviso-dado">⚠️ ${a}</div>`).join('');
     const PESSOA = VISAO !== 'ger', NOMES = { ger: 'GERENTES', vend: 'VENDEDORES', sen: 'ASSISTENTES' };
     document.getElementById('rankTit').innerText = 'RANKING DOS ' + NOMES[VISAO];
     document.getElementById('podioTit').innerText = `OS 3 ${NOMES[VISAO]} MAIS FERAS`;
-    document.getElementById('busca').placeholder = PESSOA ? '🔍 Nome, matrícula ou filial…' : '🔍 Filial, cidade ou gerente…';
+    document.getElementById('busca').placeholder = PESSOA ? '🔍 Nome ou filial…' : '🔍 Filial, cidade ou gerente…';
     const VAGAS = { ger: 2, vend: 2, sen: 0 }[VISAO];
     const max = Math.max(1, ...it.map(x => x.total));
     document.getElementById('lista').innerHTML = it.length ? it.map((l, i) => {
@@ -1730,7 +1809,7 @@ function renderLista(it) {
         const travaChip = l.ult && l.ult.trava === false ? '<span class="chip cor-quase" title="Vendeu menos de R$ 1.500 no mês">TRAVA R$ 1.500</span>' : '';
         const corte = VAGAS && i === VAGAS ? `<div class="corte"><span>🇭🇷 ZONA CROÁCIA ↑</span> ${VAGAS} vagas na diretoria</div>` : '';
         return `${corte}<div class="lj${VAGAS && i < VAGAS ? ' zona' : ''}" data-id="${esc(l.id)}" data-busca="${esc(l.busca)}" data-fl="${esc(l.f)}" data-reg="${esc(l.reg)}">
-            <div class="ps">${i + 1}º</div>
+            <div class="ps">${l.pos || i + 1}º</div>
             <div class="md">
                 <div class="n1">${esc(l.titulo)}</div>
                 <div class="n2">${esc(l.sub)} <span class="selo ${sc}" style="margin:0 0 0 6px;font-size:.52rem;padding:1px 6px">${st}</span></div>
@@ -1874,8 +1953,8 @@ function itensBuscaFera() {
     const it = [];
     if (podeVer('reg')) CAMP.regs.forEach((x, i) => it.push({ t: 'reg', id: x.r, ic: '🏢', nome: `Regional ${nomeReg(x.r)}`, sub: `${i + 1}º entre as regionais`, b: `regional ${nomeReg(x.r)} ${x.r}` }));
     if (podeVer('ger')) CAMP.ger.forEach((g, i) => it.push({ t: 'ger', id: g.f, ic: '👔', nome: rotuloFl(g.f, false), sub: `Loja · Regional ${nomeReg(INFO[g.f].regional)} · ${i + 1}º`, b: `fl ${g.f} ${g.f} ${INFO[g.f].cidade} ${INFO[g.f].gerente} ${nomeReg(INFO[g.f].regional)}` }));
-    if (podeVer('vend')) CAMP.vend.forEach((o, i) => it.push({ t: 'vend', id: o.key, ic: '🤝', nome: nomeCurto(o.nome), sub: `Vendedor · ${rotuloFl(o.f, false)} · ${i + 1}º`, b: `${o.nome} fl ${o.f} ${o.f} ${(INFO[o.f] || {}).cidade || ''}` }));
-    if (podeVer('sen')) CAMP.sen.forEach((o, i) => it.push({ t: 'sen', id: o.key, ic: '⭐', nome: nomeCurto(o.nome), sub: `Ass. Sênior · ${rotuloFl(o.f, false)} · ${i + 1}º`, b: `${o.nome} fl ${o.f} ${o.f} ${(INFO[o.f] || {}).cidade || ''} senior` }));
+    if (podeVer('vend')) CAMP.vend.forEach((o, i) => it.push({ t: 'vend', id: o.key, ic: '🤝', nome: nomeCurto(o.nome), sub: `${rotCargo(o.cargo)} · ${rotuloFl(o.f, false)} · ${i + 1}º`, b: `${o.nome} fl ${o.f} ${o.f} ${(INFO[o.f] || {}).cidade || ''}` }));
+    if (podeVer('sen')) CAMP.sen.forEach((o, i) => it.push({ t: 'sen', id: o.key, ic: '⭐', nome: nomeCurto(o.nome), sub: `${o.cargo || 'Ass. Sênior'} · ${rotuloFl(o.f, false)} · ${i + 1}º na empresa`, b: `${o.nome} fl ${o.f} ${o.f} ${(INFO[o.f] || {}).cidade || ''} senior` }));
     it.forEach(x => x.b = normAba(x.b).toLowerCase());
     return it;
 }
@@ -1947,10 +2026,10 @@ function perfilPessoa(vis, key, ehMeu) {
         : kpi('Trava do mês', sc && sc.trava ? '✓' : '✗', sc && sc.trava ? 'vendeu mais de R$ 1.500' : 'precisa de R$ 1.500 em serviços', sc && sc.trava ? 'verde' : '');
     return `
         <section class="card cargo-head"><div class="ch-top"><div><div class="ch-tit">${esc(nomeCurto(o.nome).toUpperCase())} ${selo(ehMeu)}</div>
-            <div class="ch-sub">${vis === 'sen' ? 'Assistente Sênior / Líder Comercial' : 'Vendedor'} · ${esc(rotuloFl(o.f))}</div></div><div class="ch-vaga"><b>${i + 1}º</b>na diretoria</div></div>
+            <div class="ch-sub">${vis === 'sen' ? esc(o.cargo || 'Assistente Sênior / Líder Comercial') : rotCargo(o.cargo)} · ${esc(rotuloFl(o.f))}</div></div><div class="ch-vaga"><b>${i + 1}º</b>${vis === 'sen' ? 'na empresa' : 'na diretoria'}</div></div>
             <div class="kpis pf-kpis" style="margin-top:16px">
                 ${kpi('Pontos acumulados', ptsTxt(o.total), sc ? `${o.ultMes.nome.toLowerCase()}: ${ptsTxt(sc.pts)} × ${o.ultMes.peso}` : 'sem meta no mês', 'ouro')}
-                ${kpi('Posição na diretoria', `${i + 1}º`, `de ${lista.length}${vis === 'sen' ? ' · a vaga é da empresa toda' : ''}`)}
+                ${kpi(vis === 'sen' ? 'Posição na empresa' : 'Posição na diretoria', `${i + 1}º`, `de ${lista.length}${vis === 'sen' ? ' · 1 vaga na empresa toda' : ''}`)}
                 ${kpi(vis === 'sen' ? 'Serviços no mês' : 'Serviços (meta)', serv ? (vis === 'sen' ? brl(serv.r) : pctTxt(serv.p)) : '—', serv ? (vis === 'sen' ? `${Math.floor(serv.r / 1500)} bloco(s) de R$ 1.500` : `${brl(serv.r)} de ${brl(serv.m)}`) : '')}
                 ${quarto}
             </div>
@@ -1994,7 +2073,7 @@ function renderPerfil() {
     if (!alvo) {
         if (u.nivel === 'adm') corpo = semPerfil('Busque uma fera acima — uma regional, uma loja, um vendedor ou um sênior — ou toque em alguém nos rankings para ver o perfil completo.');
         else if (u.nivel === 'gerente') corpo = semPerfil(`Não encontrei a sua loja${u.filial ? ` (FL ${esc(limpa(u.filial))})` : ''} no ranking. Peça para o admin conferir a coluna <b>FILIAL</b> da sua linha na aba ACESSOS.`);
-        else corpo = semPerfil(`Não encontrei os seus resultados na aba ${u.nivel === 'senior' ? 'SENIORES' : 'VENDEDORES'}. O dash procura pela sua matrícula e pelo seu nome${u.filial ? ` na FL ${esc(limpa(u.filial))}` : ''}; peça para o admin conferir a aba ACESSOS.`);
+        else corpo = semPerfil(`Não encontrei os seus resultados na aba ${u.nivel === 'senior' ? 'SENIORES' : 'VENDEDORES'}. O dash procura pelo seu ID e pelo seu nome${u.filial ? ` na FL ${esc(limpa(u.filial))}` : ''}; peça para o admin conferir a aba ACESSOS.`);
     }
     else if (alvo.tipo === 'ger') corpo = perfilLoja(alvo.id, ehMeu);
     else if (alvo.tipo === 'reg') corpo = perfilRegional(alvo.id);
